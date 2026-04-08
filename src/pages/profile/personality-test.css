@@ -1,0 +1,15 @@
+.test-page {
+  min-height: 100vh;
+}
+
+.option-item {
+  transition: all 0.2s;
+}
+
+.option-item:active {
+  transform: scale(0.98);
+}
+
+.progress-container {
+  margin-top: 12px;
+}

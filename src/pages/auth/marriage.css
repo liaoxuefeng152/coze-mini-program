@@ -1,0 +1,24 @@
+.auth-page {
+  min-height: 100vh;
+}
+
+.radio-option {
+  transition: all 0.2s;
+}
+
+.radio-option:active {
+  transform: scale(0.98);
+}
+
+.step-circle.active {
+  animation: scale 0.3s ease-in-out;
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}

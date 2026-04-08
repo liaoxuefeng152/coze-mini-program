@@ -1,0 +1,11 @@
+.profile-page {
+  min-height: 100vh;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border-radius: 8px;
+}

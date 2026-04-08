@@ -1,0 +1,29 @@
+.profile-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cover-gradient {
+  background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
+}
+
+.menu-item {
+  transition: background-color 0.2s;
+}
+
+.menu-item:active {
+  background-color: #f3f4f6;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}

@@ -1,0 +1,19 @@
+.auth-page {
+  min-height: 100vh;
+}
+
+.auth-item {
+  transition: all 0.2s;
+}
+
+.auth-item:active {
+  transform: scale(0.98);
+}
+
+.icon-container {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

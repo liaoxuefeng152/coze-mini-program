@@ -1,4 +1,18 @@
 .messages-page {
-  min-height: 100vh;
-  background-color: #f9fafb;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.chat-item {
+  transition: transform 0.2s;
+}
+
+.chat-item:active {
+  transform: scale(0.98);
 }
