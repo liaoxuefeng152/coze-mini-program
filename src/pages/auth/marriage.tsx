@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { View, Text, Radio, RadioGroup, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
@@ -65,11 +66,11 @@ export default function MarriageAuthPage() {
           <View className="step-circle flex items-center justify-center w-8 h-8 rounded-full bg-rose-500 text-white text-sm font-semibold">
             ✓
           </View>
-          <View className="step-line w-12 h-0.5 bg-rose-500"></View>
+          <View className="step-line w-12 h-1 bg-rose-500"></View>
           <View className="step-circle flex items-center justify-center w-8 h-8 rounded-full bg-rose-500 text-white text-sm font-semibold">
             ✓
           </View>
-          <View className="step-line w-12 h-0.5 bg-rose-500"></View>
+          <View className="step-line w-12 h-1 bg-rose-500"></View>
           <View className="step-circle active flex items-center justify-center w-8 h-8 rounded-full bg-rose-500 text-white text-sm font-semibold">
             3
           </View>

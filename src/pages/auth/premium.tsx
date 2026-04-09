@@ -1,8 +1,9 @@
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { CircleCheck, Star } from 'lucide-react-taro'
+import { Button } from '@/components/ui/button'
 import './index.css'
 
 interface AuthItem {
@@ -104,7 +105,7 @@ export default function PremiumAuthPage() {
                 <Text className="block text-sm opacity-90">已认证 {getApprovedCount()}/5</Text>
               </View>
             </View>
-            <View className="bg-white/20 rounded-lg p-3 mt-4">
+            <View className="bg-white bg-opacity-20 rounded-lg p-3 mt-4">
               <Text className="block text-sm">
                 匹配权重提升：<Text className="font-bold text-lg">+{getMatchScoreBonus()}%</Text>
               </Text>
@@ -131,7 +132,7 @@ export default function PremiumAuthPage() {
                         <CircleCheck size={16} color="#22c55e" />
                       )}
                       {item.status === 'approved' && (
-                        <View className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs">已认证</View>
+                        <View className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">已认证</View>
                       )}
                     </View>
                     <Text className="block text-xs text-gray-500">{item.description}</Text>

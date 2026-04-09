@@ -138,7 +138,7 @@ export default function PublishPage() {
                         className="w-full h-24 rounded-lg"
                       />
                       <View
-                        className="absolute top-1 right-1 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+                        className="absolute top-1 right-1 w-6 h-6 bg-black bg-opacity-50 rounded-full flex items-center justify-center"
                         onClick={() => handleRemoveImage(index)}
                       >
                         <X size={14} color="#ffffff" />
@@ -183,12 +183,12 @@ export default function PublishPage() {
                       className="w-full h-48 rounded-lg"
                     />
                     <View
-                      className="absolute top-1 right-1 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+                      className="absolute top-1 right-1 w-6 h-6 bg-black bg-opacity-50 rounded-full flex items-center justify-center"
                       onClick={() => setVideo('')}
                     >
                       <X size={14} color="#ffffff" />
                     </View>
-                    <View className="absolute bottom-1 left-1 bg-black/50 px-2 py-1 rounded">
+                    <View className="absolute bottom-1 left-1 bg-black bg-opacity-50 px-2 py-1 rounded">
                       <Video size={12} color="#ffffff" />
                       <Text className="text-xs text-white ml-1">10秒</Text>
                     </View>

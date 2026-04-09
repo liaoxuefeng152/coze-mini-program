@@ -190,7 +190,7 @@ export default function ProfilePage() {
 
               <Separator />
 
-              <View className="menu-item flex items-center justify-between p-4" onClick={() => handlePageNavigate('/pages/chat/list')}>
+              <View className="menu-item flex items-center justify-between p-4" onClick={() => handlePageNavigate('/pages/messages/index')}>
                 <View className="flex items-center gap-3">
                   <User size={20} color="#3B82F6" />
                   <Text className="text-base">消息</Text>

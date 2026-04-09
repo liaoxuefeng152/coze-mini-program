@@ -71,7 +71,7 @@ export default function CirclePostsPage() {
             className="w-full h-48"
           />
           {post.type === 'video' && (
-            <View className="absolute inset-0 flex items-center justify-center bg-black/30">
+            <View className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
               <Play size={48} color="#ffffff" />
             </View>
           )}

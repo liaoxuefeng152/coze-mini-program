@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { View, Text, Button, Camera } from '@tarojs/components'
 import Taro, { useReady } from '@tarojs/taro'
 import { useState } from 'react'
@@ -157,11 +158,11 @@ export default function FaceAuthPage() {
           <View className="step-circle flex items-center justify-center w-8 h-8 rounded-full bg-rose-500 text-white text-sm font-semibold">
             ✓
           </View>
-          <View className="step-line w-12 h-0.5 bg-rose-500"></View>
+          <View className="step-line w-12 h-1 bg-rose-500"></View>
           <View className="step-circle active flex items-center justify-center w-8 h-8 rounded-full bg-rose-500 text-white text-sm font-semibold">
             2
           </View>
-          <View className="step-line w-12 h-0.5 bg-gray-300"></View>
+          <View className="step-line w-12 h-1 bg-gray-300"></View>
           <View className="step-circle flex items-center justify-center w-8 h-8 rounded-full bg-gray-300 text-gray-600 text-sm font-semibold">
             3
           </View>

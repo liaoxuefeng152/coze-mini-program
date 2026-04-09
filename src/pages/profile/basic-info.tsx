@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { View, Text, Input, Picker, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'

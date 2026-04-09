@@ -138,7 +138,7 @@ export default function ProfileEditPage() {
                     </View>
                   )}
                   {index === 0 && (
-                    <View className="absolute bottom-1 left-1 bg-[#FF6B8B] px-2 py-0.5 rounded">
+                    <View className="absolute bottom-1 left-1 bg-[#FF6B8B] px-2 py-1 rounded">
                       <Text className="text-xs text-white">头像</Text>
                     </View>
                   )}
