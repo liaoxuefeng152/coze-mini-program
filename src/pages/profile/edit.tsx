@@ -54,11 +54,11 @@ export default function ProfileEditPage() {
   }
 
   const handlePersonalityTest = () => {
-    Taro.showToast({ title: '功能开发中', icon: 'none' })
+    Taro.navigateTo({ url: '/pages/profile/personality-test' })
   }
 
   const handlePreferences = () => {
-    Taro.showToast({ title: '功能开发中', icon: 'none' })
+    Taro.navigateTo({ url: '/pages/profile/preferences' })
   }
 
   return (

@@ -2,8 +2,8 @@
 import { View, Text, Button, Progress } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Brain, ChevronLeft, ChevronRight } from 'lucide-react-taro'
+import { Card, CardContent } from '@/components/ui/card'
+import { ChevronLeft, ChevronRight } from 'lucide-react-taro'
 import './index.css'
 
 const questions = [
@@ -56,31 +56,6 @@ const questions = [
     id: 10,
     question: '面对新事物，你会？',
     options: ['积极尝试', '谨慎观察', '拒绝改变', '被动接受']
-  },
-  {
-    id: 11,
-    question: '你的消费观念是？',
-    options: ['精打细算', '适度消费', '及时行乐', '投资未来']
-  },
-  {
-    id: 12,
-    question: '在恋爱中，你最看重？',
-    options: ['外貌', '性格', '经济条件', '共同兴趣']
-  },
-  {
-    id: 13,
-    question: '你希望恋人的性格是？',
-    options: ['温柔体贴', '独立自主', '幽默风趣', '稳重踏实']
-  },
-  {
-    id: 14,
-    question: '对于婚姻，你的态度是？',
-    options: ['必须结婚', '顺其自然', '不排斥但非必需', '恐婚']
-  },
-  {
-    id: 15,
-    question: '你理想的生活方式是？',
-    options: ['安稳平淡', '充满挑战', '平衡兼顾', '自由自在']
   }
 ]
 
@@ -146,50 +121,46 @@ export default function PersonalityTestPage() {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100
 
   return (
-    <View className="test-page h-full bg-gray-50">
-      <View className="header bg-white px-4 py-6 border-b border-gray-100">
-        <View className="flex items-center gap-3 mb-3">
-          <Brain size={28} color="#f43f5e" />
-          <View>
-            <Text className="block text-2xl font-bold text-gray-900">性格测试</Text>
-            <Text className="block text-sm text-gray-500">15道题，帮助AI更懂你</Text>
-          </View>
-        </View>
-        <View className="progress-container">
+    <View className="test-page h-full bg-[#FAFAFA]">
+      <View className="header bg-white px-4 py-4 border-b border-gray-100">
+        <Text className="block text-2xl font-bold text-gray-900 mb-1">性格测试</Text>
+        <Text className="block text-sm text-gray-500">10道题，帮助AI更懂你</Text>
+      </View>
+
+      <View className="content flex-1 overflow-y-auto px-4 py-4">
+        {/* 进度条 */}
+        <View className="progress-container mb-4">
           <Progress
             percent={progress}
             strokeWidth={8}
-            activeColor="#f43f5e"
-            backgroundColor="#fce7f3"
+            activeColor="#FF6B8B"
+            backgroundColor="#E5E5E5"
             borderRadius={4}
           />
           <Text className="block text-xs text-gray-500 text-center mt-2">
             {currentQuestionIndex + 1} / {questions.length}
           </Text>
         </View>
-      </View>
 
-      <View className="content px-4 py-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <Text className="block text-lg font-semibold text-gray-900 mb-4">
               Q{currentQuestionIndex + 1}: {questions[currentQuestionIndex].question}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </Text>
+
             <View className="options-list space-y-3">
               {questions[currentQuestionIndex].options.map((option, index) => (
                 <View
                   key={index}
                   className={`option-item p-4 rounded-lg border-2 ${
                     selectedOption === index
-                      ? 'border-rose-500 bg-rose-50'
+                      ? 'border-[#FF6B8B] bg-[#FFF0F5]'
                       : 'border-gray-200 bg-white'
                   }`}
                   onClick={() => handleOptionSelect(index)}
                 >
                   <Text className={`${
-                    selectedOption === index ? 'text-rose-600 font-medium' : 'text-gray-700'
+                    selectedOption === index ? 'text-[#FF6B8B] font-medium' : 'text-gray-700'
                   }`}
                   >
                     {String.fromCharCode(65 + index)}. {option}
@@ -200,7 +171,7 @@ export default function PersonalityTestPage() {
           </CardContent>
         </Card>
 
-        <View className="action-buttons mt-6 flex gap-3">
+        <View className="action-buttons flex gap-3">
           <Button
             className="flex-1 bg-gray-200 text-gray-700 rounded-full py-3"
             onClick={handlePrevious}
@@ -213,9 +184,8 @@ export default function PersonalityTestPage() {
           </Button>
 
           <Button
-            className="flex-1 bg-rose-500 text-white rounded-full py-3"
+            className="flex-1 bg-[#FF6B8B] text-white rounded-full py-3"
             onClick={handleNext}
-            loading={loading}
             disabled={loading}
           >
             <View className="flex items-center justify-center gap-2">
