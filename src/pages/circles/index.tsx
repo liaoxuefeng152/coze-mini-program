@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Users, TrendingUp } from 'lucide-react-taro'
 import { Button } from '@/components/ui/button'
 import './index.css'
@@ -169,94 +170,156 @@ export default function CirclesPage() {
         <Text className="text-sm text-gray-500 mt-1">找到志同道合的TA</Text>
       </View>
 
-      <View className="content h-full overflow-y-auto px-4 py-4">
-        <View className="section-header flex items-center justify-between mb-3">
-          <Text className="text-lg font-semibold">官方圈子</Text>
-          <Badge variant="secondary" className="flex items-center gap-1">
-            <TrendingUp size={12} color="#999999" />
-            <Text>热门</Text>
-          </Badge>
+      <Tabs defaultValue="recommended" className="w-full">
+        <TabsList className="w-full bg-white border-b border-gray-100">
+          <TabsTrigger value="my" className="flex-1 py-3">
+            <Text className="text-sm">我的圈子</Text>
+          </TabsTrigger>
+          <TabsTrigger value="recommended" className="flex-1 py-3">
+            <Text className="text-sm">推荐圈子</Text>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="my" className="mt-0">
+          <View className="content h-full overflow-y-auto px-4 py-4">
+            {circles.filter(c => c.isJoined).length === 0 ? (
+              <View className="empty-state flex flex-col items-center justify-center py-20">
+                <Users size={48} color="#CCCCCC" />
+                <Text className="text-base font-semibold text-gray-500 mt-4">
+                  还没有加入任何圈子
+                </Text>
+                <Text className="text-sm text-gray-400 mt-2">
+                  快去「推荐圈子」看看吧
+                </Text>
+              </View>
+            ) : (
+              <>
+                <View className="section-header flex items-center justify-between mb-3">
+                  <Text className="text-lg font-semibold">已加入圈子</Text>
+                  <Text className="text-sm text-gray-500">{circles.filter(c => c.isJoined).length}个</Text>
+                </View>
+
+                <View className="circles-list grid grid-cols-2 gap-3">
+                  {circles.filter(c => c.isJoined).map(circle => (
+                    <CircleCard
+                      key={circle.id}
+                      circle={circle}
+                      onJoin={handleJoinCircle}
+                      onDetail={handleCircleDetail}
+                    />
+                  ))}
+                </View>
+              </>
+            )}
+          </View>
+        </TabsContent>
+
+        <TabsContent value="recommended" className="mt-0">
+          <View className="content h-full overflow-y-auto px-4 py-4">
+            <View className="section-header flex items-center justify-between mb-3">
+              <Text className="text-lg font-semibold">官方圈子</Text>
+              <Badge variant="secondary" className="flex items-center gap-1">
+                <TrendingUp size={12} color="#999999" />
+                <Text>热门</Text>
+              </Badge>
+            </View>
+
+            <View className="circles-list grid grid-cols-2 gap-3">
+              {circles.map(circle => (
+                <CircleCard
+                  key={circle.id}
+                  circle={circle}
+                  onJoin={handleJoinCircle}
+                  onDetail={handleCircleDetail}
+                />
+              ))}
+            </View>
+
+            <View className="tips-section mt-6">
+              <View className="bg-[#FFF0F5] rounded-lg p-4">
+                <Text className="block text-sm font-semibold text-[#FF6B8B] mb-2">
+                  💡 加入圈子有什么好处？
+                </Text>
+                <Text className="block text-xs text-[#FF6B8B] mb-1">
+                  • 找到志同道合的朋友
+                </Text>
+                <Text className="block text-xs text-[#FF6B8B] mb-1">
+                  • 提高匹配成功率
+                </Text>
+                <Text className="block text-xs text-[#FF6B8B]">
+                  • 发布动态，增加曝光
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TabsContent>
+      </Tabs>
+    </View>
+  )
+}
+
+function CircleCard({ circle, onJoin, onDetail }: {
+  circle: Circle
+  onJoin: (id: string) => void
+  onDetail: (id: string) => void
+}) {
+  return (
+    <Card className="circle-card overflow-hidden">
+      <CardContent className="p-0">
+        <View className="cover-section relative" onClick={() => onDetail(circle.id)}>
+          <Image
+            src={circle.coverUrl}
+            mode="aspectFill"
+            className="w-full h-24"
+          />
+          {circle.isOfficial && (
+            <Badge className="absolute top-2 left-2 bg-amber-500 text-white">
+              官方
+            </Badge>
+          )}
+          {circle.isJoined && (
+            <Badge className="absolute top-2 right-2 bg-green-500 text-white">
+              已加入
+            </Badge>
+          )}
         </View>
 
-        <View className="circles-list grid grid-cols-2 gap-3">
-          {circles.map(circle => (
-            <Card key={circle.id} className="circle-card overflow-hidden">
-              <CardContent className="p-0">
-                <View className="cover-section relative" onClick={() => handleCircleDetail(circle.id)}>
-                  <Image
-                    src={circle.coverUrl}
-                    mode="aspectFill"
-                    className="w-full h-24"
-                  />
-                  {circle.isOfficial && (
-                    <Badge className="absolute top-2 left-2 bg-amber-500 text-white">
-                      官方
-                    </Badge>
-                  )}
-                  {circle.isJoined && (
-                    <Badge className="absolute top-2 right-2 bg-green-500 text-white">
-                      已加入
-                    </Badge>
-                  )}
-                </View>
-
-                <View className="info-section p-3">
-                  <Text className="block font-semibold mb-1">{circle.name}</Text>
-                  <Text className="block text-xs text-gray-500 mb-2 line-clamp-2">
-                    {circle.description}
-                  </Text>
-                  <View className="flex items-center justify-between">
-                    <View className="flex items-center gap-1">
-                      <Users size={12} color="#999999" />
-                      <Text className="text-xs text-gray-500">
-                        {circle.memberCount > 10000
-                          ? `${(circle.memberCount / 10000).toFixed(1)}万`
-                          : circle.memberCount}
-                      </Text>
-                    </View>
-                    {circle.matchCount > 0 && (
-                      <Text className="text-xs text-[#FF6B8B]">{circle.matchCount}匹配</Text>
-                    )}
-                  </View>
-                </View>
-
-                <View className="action-section px-3 pb-3">
-                  <Button
-                    className={`w-full py-2 rounded-lg ${
-                      circle.isJoined
-                        ? 'bg-gray-200 text-gray-700'
-                        : 'bg-[#FF6B8B] text-white'
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleJoinCircle(circle.id)
-                    }}
-                  >
-                    {circle.isJoined ? '退出' : '加入'}
-                  </Button>
-                </View>
-              </CardContent>
-            </Card>
-          ))}
-        </View>
-
-        <View className="tips-section mt-6">
-          <View className="bg-[#FFF0F5] rounded-lg p-4">
-            <Text className="block text-sm font-semibold text-[#FF6B8B] mb-2">
-              💡 加入圈子有什么好处？
-            </Text>
-            <Text className="block text-xs text-[#FF6B8B] mb-1">
-              • 找到志同道合的朋友
-            </Text>
-            <Text className="block text-xs text-[#FF6B8B] mb-1">
-              • 提高匹配成功率
-            </Text>
-            <Text className="block text-xs text-[#FF6B8B]">
-              • 发布动态，增加曝光
-            </Text>
+        <View className="info-section p-3">
+          <Text className="block font-semibold mb-1">{circle.name}</Text>
+          <Text className="block text-xs text-gray-500 mb-2 line-clamp-2">
+            {circle.description}
+          </Text>
+          <View className="flex items-center justify-between">
+            <View className="flex items-center gap-1">
+              <Users size={12} color="#999999" />
+              <Text className="text-xs text-gray-500">
+                {circle.memberCount > 10000
+                  ? `${(circle.memberCount / 10000).toFixed(1)}万`
+                  : circle.memberCount}
+              </Text>
+            </View>
+            {circle.matchCount > 0 && (
+              <Text className="text-xs text-[#FF6B8B]">{circle.matchCount}匹配</Text>
+            )}
           </View>
         </View>
-      </View>
-    </View>
+
+        <View className="action-section px-3 pb-3">
+          <Button
+            className={`w-full py-2 rounded-lg ${
+              circle.isJoined
+                ? 'bg-gray-200 text-gray-700'
+                : 'bg-[#FF6B8B] text-white'
+            }`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onJoin(circle.id)
+            }}
+          >
+            {circle.isJoined ? '退出' : '加入'}
+          </Button>
+        </View>
+      </CardContent>
+    </Card>
   )
 }
