@@ -118,7 +118,7 @@ export default function ProfileEditPage() {
             <Text className="text-base font-semibold mb-3">个人简介</Text>
             <View className="bg-gray-50 rounded-xl p-3">
               <Textarea
-                style={{ width: '100%', minHeight: '120px', backgroundColor: 'transparent' }}
+                style={{ width: '100%', minHeight: '120px', backgroundColor: 'transparent', boxSizing: 'border-box' }}
                 placeholder="介绍一下自己吧..."
                 value={bio}
                 onInput={(e) => setBio(e.detail.value)}
