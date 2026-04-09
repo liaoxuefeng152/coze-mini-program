@@ -1,8 +1,8 @@
-import { View, Text, Input, Button, Image } from '@tarojs/components'
+import { View, Text, Button, Image, Textarea } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Upload, FileText, CheckCircle } from 'lucide-react-taro'
+import { Upload, FileText, CircleCheck } from 'lucide-react-taro'
 import './index.css'
 
 export default function ManualAuthPage() {
@@ -77,7 +77,7 @@ export default function ManualAuthPage() {
                     className="w-full h-48 rounded-lg"
                   />
                   <View className="success-badge absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
-                    <CheckCircle size={20} color="#ffffff" />
+                    <CircleCheck size={20} color="#ffffff" />
                   </View>
                 </View>
               ) : (
@@ -121,9 +121,8 @@ export default function ManualAuthPage() {
           </CardHeader>
           <CardContent>
             <View className="bg-gray-50 rounded-lg p-4">
-              <Input
+              <Textarea
                 className="w-full bg-transparent"
-                type="textarea"
                 placeholder="请输入备注信息..."
                 value={remark}
                 onInput={(e) => setRemark(e.detail.value)}

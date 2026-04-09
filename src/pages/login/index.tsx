@@ -81,7 +81,8 @@ export default function LoginPage() {
         <View className="flex items-center gap-2">
           <Checkbox
             checked={agreed}
-            onChange={(e) => setAgreed(e.detail.checked)}
+            value="agreed"
+            onChange={(e: any) => setAgreed(e.detail.value.includes('agreed'))}
             color="#f43f5e"
           />
           <Text className="text-sm text-gray-600">

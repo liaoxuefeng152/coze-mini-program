@@ -1,8 +1,8 @@
-import { View, Text, Button, Image } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge, CheckCircle, Star } from 'lucide-react-taro'
+import { Card, CardContent } from '@/components/ui/card'
+import { CircleCheck, Star } from 'lucide-react-taro'
 import './index.css'
 
 interface AuthItem {
@@ -15,7 +15,7 @@ interface AuthItem {
 }
 
 export default function PremiumAuthPage() {
-  const [authItems, setAuthItems] = useState<AuthItem[]>([
+  const [authItems] = useState<AuthItem[]>([
     {
       type: 'education',
       name: '学历认证',
@@ -98,7 +98,7 @@ export default function PremiumAuthPage() {
         <Card className="mb-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white">
           <CardContent className="p-6">
             <View className="flex items-center gap-3 mb-3">
-              <Star size={32} color="#ffffff" fill="#ffffff" />
+              <Star size={32} color="#ffffff" />
               <View>
                 <Text className="block text-xl font-bold">信用等级</Text>
                 <Text className="block text-sm opacity-90">已认证 {getApprovedCount()}/5</Text>
@@ -117,7 +117,7 @@ export default function PremiumAuthPage() {
             可选认证（全部完成后获得专属徽章）
           </Text>
 
-          {authItems.map((item, index) => (
+          {authItems.map((item) => (
             <Card key={item.type} className="auth-item">
               <CardContent className="p-4">
                 <View className="flex items-center gap-4">
@@ -128,10 +128,10 @@ export default function PremiumAuthPage() {
                     <View className="flex items-center gap-2 mb-1">
                       <Text className="block font-semibold">{item.name}</Text>
                       {item.status === 'approved' && (
-                        <CheckCircle size={16} color="#22c55e" />
+                        <CircleCheck size={16} color="#22c55e" />
                       )}
                       {item.status === 'approved' && (
-                        <Badge className="text-xs">已认证</Badge>
+                        <View className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs">已认证</View>
                       )}
                     </View>
                     <Text className="block text-xs text-gray-500">{item.description}</Text>
@@ -145,7 +145,6 @@ export default function PremiumAuthPage() {
                         ? 'bg-green-100 text-green-700'
                         : 'bg-rose-500 text-white'
                     }`}
-                    size="small"
                     onClick={() => handleAuth(item)}
                   >
                     {item.status === 'approved' ? '已完成' : '立即认证'}
@@ -168,7 +167,7 @@ export default function PremiumAuthPage() {
               • 认证越多，匹配成功率越高
             </Text>
             <Text className="block text-xs text-amber-600">
-              • 完成全部认证后获得"高信用"专属徽章
+              • 完成全部认证后获得&ldquo;高信用&rdquo;专属徽章
             </Text>
           </View>
         </View>

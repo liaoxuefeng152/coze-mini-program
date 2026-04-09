@@ -1,11 +1,10 @@
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
-import { ArrowLeft } from 'lucide-react-taro'
+import { ArrowLeft, Heart, MessageCircle, Play, Users } from 'lucide-react-taro'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Heart, MessageCircle, Play, Users } from 'lucide-react-taro'
 import { Button } from '@/components/ui/button'
 import './index.css'
 

@@ -2,7 +2,7 @@ import { View, Text, Radio, RadioGroup, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertCircle, CheckCircle } from 'lucide-react-taro'
+import { CircleAlert, CircleCheck } from 'lucide-react-taro'
 import './index.css'
 
 export default function MarriageAuthPage() {
@@ -94,7 +94,7 @@ export default function MarriageAuthPage() {
                   <Text className="block font-medium">未婚</Text>
                   <Text className="block text-xs text-gray-500 mt-1">从未结过婚</Text>
                 </View>
-                <CheckCircle size={20} color={maritalStatus === 'single' ? '#f43f5e' : '#d1d5db'} />
+                <CircleCheck size={20} color={maritalStatus === 'single' ? '#f43f5e' : '#d1d5db'} />
               </View>
 
               <View className="radio-option flex items-center gap-3 p-4 bg-gray-50 rounded-lg mb-3">
@@ -103,7 +103,7 @@ export default function MarriageAuthPage() {
                   <Text className="block font-medium">离异</Text>
                   <Text className="block text-xs text-gray-500 mt-1">已离婚，恢复单身</Text>
                 </View>
-                {maritalStatus === 'divorced' && <CheckCircle size={20} color="#f43f5e" />}
+                {maritalStatus === 'divorced' && <CircleCheck size={20} color="#f43f5e" />}
               </View>
 
               <View className="radio-option flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
@@ -112,13 +112,13 @@ export default function MarriageAuthPage() {
                   <Text className="block font-medium">丧偶</Text>
                   <Text className="block text-xs text-gray-500 mt-1">配偶已去世</Text>
                 </View>
-                {maritalStatus === 'widowed' && <CheckCircle size={20} color="#f43f5e" />}
+                {maritalStatus === 'widowed' && <CircleCheck size={20} color="#f43f5e" />}
               </View>
             </RadioGroup>
 
             {maritalStatus === 'divorced' && (
               <View className="bg-amber-50 rounded-lg p-3 mt-4 flex gap-2">
-                <AlertCircle size={16} color="#f59e0b" />
+                <CircleAlert size={16} color="#f59e0b" />
                 <Text className="text-xs text-amber-600">
                   系统将随机抽检离婚证，请确保婚姻状况真实
                 </Text>

@@ -1,4 +1,4 @@
-import { View, Text, Input, Picker, Slider, Button, Checkbox, CheckboxGroup } from '@tarojs/components'
+import { View, Text, Picker, Slider, Button, Checkbox, CheckboxGroup } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -121,7 +121,7 @@ export default function PreferencesPage() {
                   mode="selector"
                   range={educationOptions}
                   value={formData.educationIndex}
-                  onChange={(e) => setFormData(prev => ({ ...prev, educationIndex: e.detail.value }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, educationIndex: e.detail.value[0] }))}
                 >
                   <Text className="w-full">
                     {educationOptions[formData.educationIndex]}
@@ -137,7 +137,7 @@ export default function PreferencesPage() {
                   mode="selector"
                   range={incomeOptions}
                   value={formData.incomeIndex}
-                  onChange={(e) => setFormData(prev => ({ ...prev, incomeIndex: e.detail.value }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, incomeIndex: e.detail.value[0] }))}
                 >
                   <Text className="w-full">
                     {incomeOptions[formData.incomeIndex]}

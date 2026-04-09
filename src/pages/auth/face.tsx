@@ -1,7 +1,7 @@
 import { View, Text, Button, Camera } from '@tarojs/components'
 import Taro, { useReady } from '@tarojs/taro'
-import { useState, useEffect } from 'react'
-import { Camera as CameraIcon, RefreshCw, AlertCircle } from 'lucide-react-taro'
+import { useState } from 'react'
+import { Camera as CameraIcon, CircleAlert } from 'lucide-react-taro'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import './index.css'
 
@@ -129,7 +129,7 @@ export default function FaceAuthPage() {
     return (
       <View className="auth-page h-full bg-gray-50 flex items-center justify-center">
         <View className="text-center px-8">
-          <AlertCircle size={64} color="#f43f5e" />
+          <CircleAlert size={64} color="#f43f5e" />
           <Text className="block text-xl font-bold mt-4 text-gray-900">人脸核验已锁定</Text>
           <Text className="block text-sm text-gray-500 mt-2">
             为安全，人脸验证已临时锁定，还剩 {hours} 小时

@@ -189,7 +189,8 @@ export default function PersonalityTestPage() {
                 >
                   <Text className={`${
                     selectedOption === index ? 'text-rose-600 font-medium' : 'text-gray-700'
-                  }`}>
+                  }`}
+                  >
                     {String.fromCharCode(65 + index)}. {option}
                   </Text>
                 </View>
@@ -205,7 +206,7 @@ export default function PersonalityTestPage() {
             disabled={currentQuestionIndex === 0}
           >
             <View className="flex items-center justify-center gap-2">
-              <ChevronLeft size={18} />
+              <ChevronLeft size={18} color="#374151" />
               <Text>上一题</Text>
             </View>
           </Button>
@@ -218,7 +219,7 @@ export default function PersonalityTestPage() {
           >
             <View className="flex items-center justify-center gap-2">
               <Text>{currentQuestionIndex === questions.length - 1 ? '提交' : '下一题'}</Text>
-              <ChevronRight size={18} />
+              <ChevronRight size={18} color="#ffffff" />
             </View>
           </Button>
         </View>
