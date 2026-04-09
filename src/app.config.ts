@@ -39,6 +39,7 @@ export default defineAppConfig({
     'pages/messages/index',
     'pages/chat/list',
     'pages/chat/detail',
+    'pages/chat/ai-assistant',
     'pages/matches/success',
     
     // 喜欢与匹配
