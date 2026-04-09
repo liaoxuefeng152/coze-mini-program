@@ -90,6 +90,31 @@ export default function CreditPage() {
     Taro.navigateTo({ url: '/pages/auth/index' })
   }
 
+  const handleViewFactorDetail = (factor: CreditFactor) => {
+    // 根据因子类型跳转到对应的认证页面
+    switch (factor.id) {
+      case '1': // 基础信息
+        Taro.navigateTo({ url: '/pages/profile/edit' })
+        break
+      case '2': // 人脸认证
+        Taro.navigateTo({ url: '/pages/auth/face' })
+        break
+      case '3': // 实名认证
+        Taro.navigateTo({ url: '/pages/auth/basic' })
+        break
+      case '4': // 婚姻认证
+        Taro.navigateTo({ url: '/pages/auth/marriage' })
+        break
+      default:
+        // 活跃度、优质内容、良好互动显示提示
+        Taro.showModal({
+          title: factor.name,
+          content: factor.description,
+          showCancel: false
+        })
+    }
+  }
+
   const getStatusIcon = (status: CreditFactor['status']) => {
     switch (status) {
       case 'completed':
@@ -152,16 +177,23 @@ export default function CreditPage() {
         </View>
 
         {creditFactors.map(factor => (
-          <Card key={factor.id} className="mb-3">
+          <Card key={factor.id} className="mb-3" onClick={() => handleViewFactorDetail(factor)}>
             <CardContent className="p-4">
               <View className="flex items-center justify-between mb-2">
                 <View className="flex items-center gap-2">
                   {getStatusIcon(factor.status)}
                   <Text className="text-base font-semibold">{factor.name}</Text>
                 </View>
-                <View className="text-right">
-                  <Text className="text-lg font-bold text-[#FF6B8B]">{factor.score}</Text>
-                  <Text className="text-xs text-gray-500">/{factor.maxScore}</Text>
+                <View className="flex items-center gap-2">
+                  <View className="text-right">
+                    <Text className="text-lg font-bold text-[#FF6B8B]">{factor.score}</Text>
+                    <Text className="text-xs text-gray-500">/{factor.maxScore}</Text>
+                  </View>
+                  {factor.status !== 'completed' && (
+                    <Badge variant="outline" className="text-xs">
+                      <Text>查看详情</Text>
+                    </Badge>
+                  )}
                 </View>
               </View>
               <View className="mb-2">
