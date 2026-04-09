@@ -69,6 +69,64 @@ const allPosts: Post[] = [
     comments: 15,
     status: 'normal',
     createdAt: '2天前'
+  },
+  {
+    id: '4',
+    userId: '1',
+    nickname: '小可爱',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+    circleName: '旅行户外',
+    type: 'video',
+    coverUrl: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop',
+    videoUrl: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+    content: '周末去爬山，风景超美，心情特别好🏔️ 目的地：香山',
+    likes: 312,
+    comments: 67,
+    status: 'normal',
+    createdAt: '3天前'
+  },
+  {
+    id: '5',
+    userId: '1',
+    nickname: '小可爱',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+    circleName: '宠物生活',
+    type: 'video',
+    coverUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=300&fit=crop',
+    videoUrl: 'https://media.w3.org/2010/05/bunny/trailer.mp4',
+    content: '我家猫咪今天超级可爱，忍不住拍下来分享🐱 品种：英短蓝猫',
+    likes: 567,
+    comments: 123,
+    status: 'normal',
+    createdAt: '5天前'
+  },
+  {
+    id: '6',
+    userId: '1',
+    nickname: '小可爱',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+    circleName: '电影追剧',
+    type: 'image',
+    coverUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&h=300&fit=crop',
+    content: '周末看电影，这部电影太感人了😭 《肖申克的救赎》',
+    likes: 156,
+    comments: 28,
+    status: 'normal',
+    createdAt: '1周前'
+  },
+  {
+    id: '7',
+    userId: '1',
+    nickname: '小可爱',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+    circleName: '摄影爱好者',
+    type: 'image',
+    coverUrl: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=300&fit=crop',
+    content: '今天拍了一组夕阳照片，光影很美📷',
+    likes: 234,
+    comments: 45,
+    status: 'normal',
+    createdAt: '1周前'
   }
 ]
 
@@ -78,9 +136,15 @@ export default function PostDetailPage() {
 
   useLoad((options) => {
     const postId = options.id
+    console.log('详情页接收到的动态 ID:', postId)
     const foundPost = allPosts.find(p => p.id === postId)
+    console.log('找到的动态数据:', foundPost)
     if (foundPost) {
+      console.log('动态类型:', foundPost.type)
+      console.log('视频 URL:', foundPost.videoUrl)
       setPost(foundPost)
+    } else {
+      console.error('未找到动态，ID:', postId)
     }
   })
 
@@ -143,13 +207,24 @@ export default function PostDetailPage() {
 
           {/* 根据动态类型显示不同内容 */}
           {post.type === 'video' && post.videoUrl ? (
-            <View className="video-container mb-4 relative rounded-lg overflow-hidden">
+            <View className="video-container mb-4 relative w-full" style={{ borderRadius: '8px', overflow: 'hidden' }}>
               <Video
                 src={post.videoUrl}
-                className="w-full"
-                style={{ height: '400px' }}
+                style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                 controls
                 poster={post.coverUrl}
+                autoplay={false}
+                loop={false}
+                muted={false}
+                initialTime={0}
+                duration={0}
+                direction={0}
+                showProgress
+                showFullscreenBtn
+                showPlayBtn
+                showCenterPlayBtn
+                enableProgressGesture
+                objectFit="cover"
               />
             </View>
           ) : (
