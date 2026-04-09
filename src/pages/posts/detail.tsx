@@ -35,7 +35,7 @@ const allPosts: Post[] = [
     circleName: '健身运动',
     type: 'video',
     coverUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop',
-    videoUrl: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+    videoUrl: 'https://vjs.zencdn.net/v/oceans.mp4',
     content: '今天跑步5公里，感觉棒极了！坚持就是胜利💪 #健身打卡 #健康生活',
     likes: 128,
     comments: 32,
@@ -50,7 +50,7 @@ const allPosts: Post[] = [
     circleName: '美食探店',
     type: 'video',
     coverUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop',
-    videoUrl: 'https://media.w3.org/2010/05/bunny/trailer.mp4',
+    videoUrl: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
     content: '分享一家超棒的咖啡馆，环境优雅，咖啡香浓☕ 店名：漫时光咖啡厅',
     likes: 256,
     comments: 45,
@@ -84,7 +84,7 @@ const allPosts: Post[] = [
     circleName: '旅行户外',
     type: 'video',
     coverUrl: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop',
-    videoUrl: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+    videoUrl: 'https://vjs.zencdn.net/v/oceans.mp4',
     content: '周末去爬山，风景超美，心情特别好🏔️ 目的地：香山',
     likes: 312,
     comments: 67,
@@ -146,6 +146,7 @@ export default function PostDetailPage() {
   const [post, setPost] = useState<Post | null>(null)
   const [isLiked, setIsLiked] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [videoError, setVideoError] = useState(false)
 
   useLoad((options) => {
     const postId = options.id
@@ -157,10 +158,22 @@ export default function PostDetailPage() {
       console.log('视频 URL:', foundPost.videoUrl)
       console.log('图片数组:', foundPost.images)
       setPost(foundPost)
+      // 重置视频错误状态
+      setVideoError(false)
     } else {
       console.error('未找到动态，ID:', postId)
     }
   })
+
+  // 视频加载错误处理
+  const handleVideoError = (e) => {
+    console.error('视频加载错误:', e)
+    setVideoError(true)
+    Taro.showToast({
+      title: '视频加载失败',
+      icon: 'none'
+    })
+  }
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -238,24 +251,32 @@ export default function PostDetailPage() {
           {/* 根据动态类型显示不同内容 */}
           {post.type === 'video' && post.videoUrl ? (
             <View className="video-container mb-4 relative w-full" style={{ borderRadius: '8px', overflow: 'hidden' }}>
-              <Video
-                src={post.videoUrl}
-                style={{ width: '100%', height: '400px', objectFit: 'cover' }}
-                controls
-                poster={post.coverUrl}
-                autoplay={false}
-                loop={false}
-                muted={false}
-                initialTime={0}
-                duration={0}
-                direction={0}
-                showProgress
-                showFullscreenBtn
-                showPlayBtn
-                showCenterPlayBtn
-                enableProgressGesture
-                objectFit="cover"
-              />
+              {videoError ? (
+                <View className="video-error flex items-center justify-center" style={{ height: '400px', backgroundColor: '#f5f5f5' }}>
+                  <Text className="text-gray-500">视频加载失败，请检查网络</Text>
+                </View>
+              ) : (
+                <Video
+                  id={`video-${post.id}`}
+                  src={post.videoUrl}
+                  className="w-full"
+                  style={{ height: '400px', display: 'block' }}
+                  controls
+                  poster={post.coverUrl}
+                  autoplay={false}
+                  loop={false}
+                  muted={false}
+                  showProgress
+                  showFullscreenBtn
+                  showPlayBtn
+                  showCenterPlayBtn
+                  enableProgressGesture
+                  onError={handleVideoError}
+                  onPlay={() => console.log('视频开始播放')}
+                  onPause={() => console.log('视频暂停')}
+                  onEnded={() => console.log('视频播放结束')}
+                />
+              )}
             </View>
           ) : (
             <View className="image-container mb-4 relative w-full">
