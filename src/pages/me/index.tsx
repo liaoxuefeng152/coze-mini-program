@@ -13,6 +13,7 @@ export default function ProfilePage() {
   const [userStats] = useState({
     likesReceived: 156,
     matches: 42,
+    myLikes: 28,
     chats: 28,
     posts: 15,
     circles: 6
@@ -99,9 +100,9 @@ export default function ProfilePage() {
                   </View>
                   <View className="stat-item text-center">
                     <Text className="block text-lg font-bold text-[#FF6B8B]">
-                      {userStats.chats}
+                      {userStats.myLikes}
                     </Text>
-                    <Text className="text-xs text-gray-500">聊天</Text>
+                    <Text className="text-xs text-gray-500">喜欢</Text>
                   </View>
                   <View className="stat-item text-center">
                     <Text className="block text-lg font-bold text-[#FF6B8B]">
