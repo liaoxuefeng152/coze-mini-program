@@ -1,5 +1,5 @@
-import { View, Text, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { View, Text, Image, Video } from '@tarojs/components'
+import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import { ArrowLeft, Heart, MessageCircle, Share2, Send } from 'lucide-react-taro'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -8,57 +8,97 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import './detail.css'
 
-export default function PostDetailPage() {
-  const [post] = useState({
+interface Post {
+  id: string
+  userId: string
+  nickname: string
+  avatarUrl: string
+  circleName: string
+  type: 'image' | 'video'
+  coverUrl: string
+  videoUrl?: string
+  content: string
+  likes: number
+  comments: number
+  status: 'normal' | 'pending' | 'rejected'
+  createdAt: string
+}
+
+// 模拟数据，与 posts/index.tsx 保持一致
+const allPosts: Post[] = [
+  {
     id: '1',
     userId: '1',
-    nickname: '小美',
+    nickname: '小可爱',
     avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
-    circleName: '旅行户外',
-    type: 'image' as const,
-    images: [
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop'
-    ],
-    videoUrl: '',
-    content: '今天去海边度假，风景太美了！海风吹着特别舒服，心情超好~ 推荐大家一定要来一次海边旅行，治愈又放松 🌊🏖️',
-    likes: 1289,
-    comments: 234,
-    shares: 56,
-    isLiked: false,
-    isCollected: false,
+    circleName: '健身运动',
+    type: 'video',
+    coverUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop',
+    videoUrl: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+    content: '今天跑步5公里，感觉棒极了！坚持就是胜利💪 #健身打卡 #健康生活',
+    likes: 128,
+    comments: 32,
+    status: 'normal',
     createdAt: '2小时前'
-  })
-  const [comments] = useState([
-    {
-      id: '1',
-      userId: '2',
-      nickname: '小红',
-      avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop',
-      content: '风景真美！我也想去海边玩~',
-      likes: 45,
-      createdAt: '1小时前',
-      isLiked: false
-    },
-    {
-      id: '2',
-      userId: '3',
-      nickname: '小芳',
-      avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop',
-      content: '海风+夕阳，太浪漫了！',
-      likes: 32,
-      createdAt: '50分钟前',
-      isLiked: true
+  },
+  {
+    id: '2',
+    userId: '1',
+    nickname: '小可爱',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+    circleName: '美食探店',
+    type: 'video',
+    coverUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop',
+    videoUrl: 'https://media.w3.org/2010/05/bunny/trailer.mp4',
+    content: '分享一家超棒的咖啡馆，环境优雅，咖啡香浓☕ 店名：漫时光咖啡厅',
+    likes: 256,
+    comments: 45,
+    status: 'normal',
+    createdAt: '1天前'
+  },
+  {
+    id: '3',
+    userId: '1',
+    nickname: '小可爱',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+    circleName: '读书学习',
+    type: 'image',
+    coverUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop',
+    content: '读完了这本书，深受启发，推荐给大家📚 《原则》- 瑞·达利欧',
+    likes: 89,
+    comments: 15,
+    status: 'normal',
+    createdAt: '2天前'
+  }
+]
+
+export default function PostDetailPage() {
+  const [post, setPost] = useState<Post | null>(null)
+  const [isLiked, setIsLiked] = useState(false)
+
+  useLoad((options) => {
+    const postId = options.id
+    const foundPost = allPosts.find(p => p.id === postId)
+    if (foundPost) {
+      setPost(foundPost)
     }
-  ])
+  })
 
   const handleLike = () => {
-    Taro.showToast({ title: '点赞成功', icon: 'success' })
+    setIsLiked(!isLiked)
+    Taro.showToast({ title: isLiked ? '取消点赞' : '点赞成功', icon: 'success' })
   }
 
   const handleShare = () => {
     Taro.showToast({ title: '分享成功', icon: 'success' })
+  }
+
+  if (!post) {
+    return (
+      <View className="post-detail-page h-full bg-[#FAFAFA] flex items-center justify-center">
+        <Text className="text-gray-500">加载中...</Text>
+      </View>
+    )
   }
 
   return (
@@ -101,21 +141,29 @@ export default function PostDetailPage() {
             {post.content}
           </Text>
 
-          <View className="images-grid grid grid-cols-3 gap-2 mb-4">
-            {post.images.map((img, index) => (
-              <Image
-                key={index}
-                src={img}
-                mode="aspectFill"
-                className="w-full h-32 rounded-lg"
+          {/* 根据动态类型显示不同内容 */}
+          {post.type === 'video' && post.videoUrl ? (
+            <View className="video-container mb-4 relative rounded-lg overflow-hidden">
+              <Video
+                src={post.videoUrl}
+                className="w-full"
+                style={{ height: '400px' }}
+                controls
+                poster={post.coverUrl}
               />
-            ))}
-          </View>
+            </View>
+          ) : (
+            <Image
+              src={post.coverUrl}
+              mode="aspectFill"
+              className="w-full h-96 rounded-lg mb-4"
+            />
+          )}
 
           <View className="stats-section flex items-center gap-6 mb-4">
             <View className="flex items-center gap-1 text-gray-500">
-              <Heart size={16} color="#FF6B8B" />
-              <Text className="text-sm">{post.likes}</Text>
+              <Heart size={16} color={isLiked ? '#FF6B8B' : '#999999'} />
+              <Text className="text-sm">{post.likes + (isLiked ? 1 : 0)}</Text>
             </View>
             <View className="flex items-center gap-1 text-gray-500">
               <MessageCircle size={16} color="#999999" />
@@ -123,40 +171,34 @@ export default function PostDetailPage() {
             </View>
             <View className="flex items-center gap-1 text-gray-500">
               <Share2 size={16} color="#999999" />
-              <Text className="text-sm">{post.shares}</Text>
+              <Text className="text-sm">分享</Text>
             </View>
           </View>
 
           <Separator />
 
           <View className="comments-section mt-4">
-            <Text className="text-base font-semibold mb-3">评论 ({comments.length})</Text>
-            {comments.map(comment => (
-              <View key={comment.id} className="comment-item mb-4">
-                <View className="flex gap-3">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={comment.avatarUrl} />
-                    <AvatarFallback>{comment.nickname[0]}</AvatarFallback>
-                  </Avatar>
-                  <View className="flex-1">
-                    <View className="flex items-center gap-2 mb-1">
-                      <Text className="text-sm font-semibold">{comment.nickname}</Text>
-                      <Text className="text-xs text-gray-500">{comment.createdAt}</Text>
-                    </View>
-                    <Text className="text-sm text-gray-800 mb-1">{comment.content}</Text>
-                    <View className="flex items-center gap-2">
-                      <View className="flex items-center gap-1">
-                        <Heart
-                          size={12}
-                          color={comment.isLiked ? '#FF6B8B' : '#999999'}
-                        />
-                        <Text className="text-xs text-gray-500">{comment.likes}</Text>
-                      </View>
+            <Text className="text-base font-semibold mb-3">评论 ({post.comments})</Text>
+            <View className="comment-item mb-4">
+              <View className="flex gap-3">
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback>访</AvatarFallback>
+                </Avatar>
+                <View className="flex-1">
+                  <View className="flex items-center gap-2 mb-1">
+                    <Text className="text-sm font-semibold">游客</Text>
+                    <Text className="text-xs text-gray-500">刚刚</Text>
+                  </View>
+                  <Text className="text-sm text-gray-800 mb-1">这条动态真棒！👍</Text>
+                  <View className="flex items-center gap-2">
+                    <View className="flex items-center gap-1">
+                      <Heart size={12} color="#999999" />
+                      <Text className="text-xs text-gray-500">0</Text>
                     </View>
                   </View>
                 </View>
               </View>
-            ))}
+            </View>
           </View>
         </View>
       </View>
@@ -166,11 +208,11 @@ export default function PostDetailPage() {
           <View className="flex-1 flex gap-2">
             <Button
               variant="outline"
-              className="flex-1 flex items-center justify-center gap-1"
+              className={`flex-1 flex items-center justify-center gap-1 ${isLiked ? 'border-[#FF6B8B]' : ''}`}
               onClick={handleLike}
             >
-              <Heart size={18} color="#FF6B8B" />
-              <Text className="text-sm">点赞</Text>
+              <Heart size={18} color={isLiked ? '#FF6B8B' : '#999999'} filled={isLiked} />
+              <Text className="text-sm">{isLiked ? '已赞' : '点赞'}</Text>
             </Button>
             <Button
               variant="outline"
