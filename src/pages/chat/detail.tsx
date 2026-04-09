@@ -1,10 +1,11 @@
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useState } from 'react'
-import { ArrowLeft, Send, Image as ImageIcon } from 'lucide-react-taro'
+import { useState, useEffect } from 'react'
+import { ArrowLeft, Send, Image as ImageIcon, Sparkles } from 'lucide-react-taro'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import './detail.css'
 
 interface Message {
@@ -18,7 +19,7 @@ interface Message {
 }
 
 export default function ChatDetailPage() {
-  const [messages] = useState<Message[]>([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       userId: '1',
@@ -77,10 +78,31 @@ export default function ChatDetailPage() {
     online: true
   })
 
+  // 暴露给 AI 助手页面调用的方法
+  const setChatInput = (text: string) => {
+    setInputText(text)
+  }
+
+  // 将方法暴露到页面实例，供其他页面调用
+  useEffect(() => {
+    ;(Taro.getCurrentInstance().page as any).setChatInput = setChatInput
+  }, [])
+
   const handleSendMessage = () => {
     if (!inputText.trim()) return
-    Taro.showToast({ title: '消息发送成功', icon: 'success' })
+    
+    const newMessage: Message = {
+      id: String(Date.now()),
+      userId: '2',
+      content: inputText,
+      type: 'text',
+      timestamp: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+      isSelf: true
+    }
+    
+    setMessages([...messages, newMessage])
     setInputText('')
+    Taro.showToast({ title: '消息发送成功', icon: 'success' })
   }
 
   const handleSendImage = () => {
@@ -88,10 +110,28 @@ export default function ChatDetailPage() {
       count: 1,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
-      success: () => {
+      success: (res) => {
+        const newMessage: Message = {
+          id: String(Date.now()),
+          userId: '2',
+          content: '[图片]',
+          type: 'image',
+          imageUrl: res.tempFilePaths[0],
+          timestamp: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+          isSelf: true
+        }
+        setMessages([...messages, newMessage])
         Taro.showToast({ title: '图片发送成功', icon: 'success' })
       }
     })
+  }
+
+  const handleOpenAIAssistant = () => {
+    Taro.navigateTo({ url: '/pages/chat/ai-assistant' })
+  }
+
+  const handleInput = (e: any) => {
+    setInputText(e.detail.value)
   }
 
   const renderMessage = (msg: Message) => (
@@ -183,18 +223,30 @@ export default function ChatDetailPage() {
           >
             <ImageIcon size={20} color="#999999" />
           </Button>
-          <View className="flex-1 bg-gray-100 rounded-full px-4 py-2">
-            <Text
-              className="text-sm text-gray-600"
-            >
-              {inputText || '输入消息...'}
-            </Text>
+          <View className="flex-1">
+            <Input
+              className="rounded-full"
+              placeholder="输入消息..."
+              value={inputText}
+              onInput={handleInput}
+              confirmType="send"
+              onConfirm={handleSendMessage}
+              maxlength={500}
+            />
           </View>
+          <Button
+            variant="ghost"
+            className="p-2"
+            onClick={handleOpenAIAssistant}
+          >
+            <Sparkles size={20} color="#FF6B8B" />
+          </Button>
           <Button
             className="bg-[#FF6B8B] text-white px-4 py-2 rounded-full"
             onClick={handleSendMessage}
+            disabled={!inputText.trim()}
           >
-            <Send size={18} color="#ffffff" />
+            <Send size={18} color={inputText.trim() ? '#ffffff' : '#999999'} />
           </Button>
         </View>
       </View>
