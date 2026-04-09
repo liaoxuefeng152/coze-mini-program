@@ -181,7 +181,7 @@ export default function IndexPage() {
 
   const handleViewProfile = () => {
     if (!currentUser) return
-    Taro.showToast({ title: '查看详细资料', icon: 'none' })
+    Taro.navigateTo({ url: `/pages/profile/detail?id=${currentUser.id}` })
   }
 
   const handleSearch = () => {
