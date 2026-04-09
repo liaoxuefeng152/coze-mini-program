@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-import { View, Text, Button, Checkbox } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
-import { Heart, User } from 'lucide-react-taro'
+import { Heart } from 'lucide-react-taro'
+import { Button } from '@/components/ui/button'
 import './index.css'
 
 export default function LoginPage() {
@@ -17,89 +18,64 @@ export default function LoginPage() {
       return
     }
 
-    Taro.getUserProfile({
-      desc: '用于完善用户资料',
-      success: (res) => {
-        console.log('用户信息', res.userInfo)
-        // TODO: 调用后端登录接口
-        Taro.showToast({
-          title: '登录成功',
-          icon: 'success'
-        })
-        // 登录成功后跳转到认证页面
-        setTimeout(() => {
-          Taro.navigateTo({ url: '/pages/auth/basic' })
-        }, 1000)
-      },
-      fail: (err) => {
-        console.error('获取用户信息失败', err)
-        Taro.showToast({
-          title: '登录失败',
-          icon: 'none'
-        })
-      }
-    })
-  }
+    // 模拟微信授权
+    Taro.showLoading({ title: '授权中...' })
 
-  const handleGetPhoneNumber = (e) => {
-    console.log('获取手机号', e)
-    // TODO: 调用后端获取手机号接口
+    // 模拟授权成功
+    setTimeout(() => {
+      Taro.hideLoading()
+      // 授权成功后跳转到手机号绑定页面
+      Taro.navigateTo({ url: '/pages/auth/phone' })
+    }, 1500)
   }
 
   return (
-    <View className="login-page h-full flex flex-col items-center justify-center">
-      <View className="logo-section mb-12 flex flex-col items-center">
-        <View className="logo-icon mb-4">
-          <Heart size={80} color="#f43f5e" />
+    <View className="login-page h-full bg-white flex flex-col items-center justify-between py-20">
+      {/* 顶部 LOGO 和标语 */}
+      <View className="logo-section flex flex-col items-center">
+        <View className="logo-icon mb-6">
+          <Heart size={80} color="#FF6B8B" />
         </View>
-        <Text className="block text-3xl font-bold text-rose-500 mb-2">AI相亲</Text>
-        <Text className="block text-sm text-gray-500">真实 · 高效 · 安全</Text>
+        <Text className="text-2xl font-bold text-gray-900">遇见对的人</Text>
       </View>
 
-      <View className="login-section w-full px-8">
+      {/* 中部按钮 */}
+      <View className="login-section">
         <Button
-          className="w-full bg-rose-500 text-white rounded-full py-4 text-lg mb-4"
+          className="w-full px-16 py-3 rounded-lg"
+          style={{
+            width: '280px',
+            height: '44px',
+            backgroundColor: agreed ? '#FF6B8B' : '#E5E5E5',
+            color: agreed ? '#FFFFFF' : '#999999'
+          }}
           onClick={handleWechatLogin}
+          disabled={!agreed}
         >
-          <View className="flex items-center justify-center gap-2">
-            <User size={24} color="#ffffff" />
-            <Text>微信授权登录</Text>
-          </View>
-        </Button>
-
-        <Button
-          className="w-full bg-green-500 text-white rounded-full py-4 text-lg"
-          openType="getPhoneNumber"
-          onGetPhoneNumber={handleGetPhoneNumber}
-        >
-          <View className="flex items-center justify-center gap-2">
-            <Text>获取手机号</Text>
-          </View>
+          <Text>微信一键登录</Text>
         </Button>
       </View>
 
-      <View className="agreement-section mt-8 px-8">
+      {/* 底部协议勾选 */}
+      <View className="agreement-section px-8">
         <View className="flex items-center gap-2">
-          <Checkbox
-            checked={agreed}
-            value="agreed"
-            onChange={(e: any) => setAgreed(e.detail.value.includes('agreed'))}
-            color="#f43f5e"
-          />
+          <View
+            className={`w-5 h-5 rounded border-2 flex items-center justify-center cursor-pointer ${
+              agreed ? 'bg-[#FF6B8B] border-[#FF6B8B]' : 'border-gray-300'
+            }`}
+            onClick={() => setAgreed(!agreed)}
+          >
+            {agreed && (
+              <View className="w-3 h-3 bg-white rounded-sm"></View>
+            )}
+          </View>
           <Text className="text-sm text-gray-600">
             我已阅读并同意
-            <Text className="text-rose-500">《用户协议》</Text>
+            <Text className="text-[#FF6B8B]">《用户协议》</Text>
             <Text>和</Text>
-            <Text className="text-rose-500">《隐私协议》</Text>
+            <Text className="text-[#FF6B8B]">《隐私协议》</Text>
           </Text>
         </View>
-      </View>
-
-      <View className="tips-section mt-12 px-8 text-center">
-        <Text className="text-xs text-gray-400">
-          登录即表示您同意遵守平台规则
-          {'\n'}AI相亲 · 用心遇见真爱
-        </Text>
       </View>
     </View>
   )
