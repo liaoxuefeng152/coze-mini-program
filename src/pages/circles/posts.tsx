@@ -1,6 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
+import { ArrowLeft } from 'lucide-react-taro'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -108,11 +109,20 @@ export default function CirclePostsPage() {
     <View className="circle-posts-page h-full bg-[#FAFAFA] flex flex-col">
       <View className="header bg-white px-4 py-4 border-b border-gray-100">
         <View className="flex items-center justify-between">
-          <View>
-            <Text className="text-lg font-bold">健身运动</Text>
-            <View className="flex items-center gap-1 mt-1">
-              <Users size={14} color="#999999" />
-              <Text className="text-xs text-gray-500">12850 成员</Text>
+          <View className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              className="p-2"
+              onClick={() => Taro.navigateBack()}
+            >
+              <ArrowLeft size={20} color="#333333" />
+            </Button>
+            <View>
+              <Text className="text-lg font-bold">健身运动</Text>
+              <View className="flex items-center gap-1 mt-1">
+                <Users size={14} color="#999999" />
+                <Text className="text-xs text-gray-500">12850 成员</Text>
+              </View>
             </View>
           </View>
           <Button
