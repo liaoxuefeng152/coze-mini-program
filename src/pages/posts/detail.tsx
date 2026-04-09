@@ -1,4 +1,4 @@
-import { View, Text, Image, Video } from '@tarojs/components'
+import { View, Text, Image, Video, Swiper, SwiperItem } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import { ArrowLeft, Heart, MessageCircle, Share2, Send } from 'lucide-react-taro'
@@ -16,6 +16,7 @@ interface Post {
   circleName: string
   type: 'image' | 'video'
   coverUrl: string
+  images?: string[]  // 多张图片
   videoUrl?: string
   content: string
   likes: number
@@ -64,6 +65,11 @@ const allPosts: Post[] = [
     circleName: '读书学习',
     type: 'image',
     coverUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=450&fit=crop',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&h=450&fit=crop',
+      'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=800&h=450&fit=crop'
+    ],
     content: '读完了这本书，深受启发，推荐给大家📚 《原则》- 瑞·达利欧',
     likes: 89,
     comments: 15,
@@ -122,6 +128,12 @@ const allPosts: Post[] = [
     circleName: '摄影爱好者',
     type: 'image',
     coverUrl: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=300&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800&h=450&fit=crop',
+      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=450&fit=crop',
+      'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&h=450&fit=crop',
+      'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=450&fit=crop'
+    ],
     content: '今天拍了一组夕阳照片，光影很美📷',
     likes: 234,
     comments: 45,
@@ -133,6 +145,7 @@ const allPosts: Post[] = [
 export default function PostDetailPage() {
   const [post, setPost] = useState<Post | null>(null)
   const [isLiked, setIsLiked] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useLoad((options) => {
     const postId = options.id
@@ -142,6 +155,7 @@ export default function PostDetailPage() {
     if (foundPost) {
       console.log('动态类型:', foundPost.type)
       console.log('视频 URL:', foundPost.videoUrl)
+      console.log('图片数组:', foundPost.images)
       setPost(foundPost)
     } else {
       console.error('未找到动态，ID:', postId)
@@ -155,6 +169,22 @@ export default function PostDetailPage() {
 
   const handleShare = () => {
     Taro.showToast({ title: '分享成功', icon: 'success' })
+  }
+
+  // 点击图片放大
+  const handleImagePreview = (index: number) => {
+    if (post && post.images && post.images.length > 0) {
+      Taro.previewImage({
+        current: post.images[index],  // 当前显示图片的 http 链接
+        urls: post.images             // 需要预览的图片 http 链接列表
+      })
+    } else if (post) {
+      // 单张图片（向后兼容）
+      Taro.previewImage({
+        current: post.coverUrl,
+        urls: [post.coverUrl]
+      })
+    }
   }
 
   if (!post) {
@@ -228,11 +258,52 @@ export default function PostDetailPage() {
               />
             </View>
           ) : (
-            <Image
-              src={post.coverUrl}
-              mode="aspectFill"
-              className="w-full h-96 rounded-lg mb-4"
-            />
+            <View className="image-container mb-4 relative w-full">
+              {/* 单张图片 */}
+              {(!post.images || post.images.length === 0) ? (
+                <Image
+                  src={post.coverUrl}
+                  mode="aspectFill"
+                  className="w-full rounded-lg"
+                  style={{ aspectRatio: '16/9' }}
+                  onClick={() => handleImagePreview(0)}
+                />
+              ) : (
+                /* 多张图片滑动 */
+                <View className="relative">
+                  <Swiper
+                    className="image-swiper w-full rounded-lg"
+                    style={{ aspectRatio: '16/9' }}
+                    indicatorDots
+                    indicatorColor="rgba(0, 0, 0, 0.3)"
+                    indicatorActiveColor="#FF6B8B"
+                    circular={false}
+                    onChange={(e) => {
+                      setCurrentImageIndex(e.detail.current)
+                    }}
+                  >
+                    {post.images.map((imgUrl, index) => (
+                      <SwiperItem key={index}>
+                        <Image
+                          src={imgUrl}
+                          mode="aspectFill"
+                          className="w-full h-full"
+                          onClick={() => handleImagePreview(index)}
+                        />
+                      </SwiperItem>
+                    ))}
+                  </Swiper>
+                  {/* 图片数量指示器 */}
+                  {post.images.length > 1 && (
+                    <View className="absolute top-2 right-2 bg-black bg-opacity-50 px-2 py-1 rounded-full">
+                      <Text className="text-xs text-white">
+                        {currentImageIndex + 1} / {post.images.length}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
+            </View>
           )}
 
           <View className="stats-section flex items-center gap-6 mb-4">

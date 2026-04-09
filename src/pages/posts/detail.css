@@ -1,3 +1,22 @@
 .post-detail-page {
   height: 100%;
 }
+
+/* 图片容器样式 */
+.image-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Swiper 样式 */
+.image-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+/* 16:9 比例的图片显示 */
+.image-swiper image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
