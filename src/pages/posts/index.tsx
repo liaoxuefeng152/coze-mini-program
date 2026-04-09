@@ -264,10 +264,15 @@ export default function PostsPage() {
         ? <Badge className="bg-red-500 text-white">驳回</Badge>
         : null
 
+    const handleCardClick = () => {
+      console.log('点击动态卡片:', post.id, post.type)
+      handlePostDetail(post.id)
+    }
+
     return (
       <Card
-        className="post-card mb-3 overflow-hidden"
-        onClick={() => handlePostDetail(post.id)}
+        className="post-card mb-3 overflow-hidden cursor-pointer"
+        onClick={handleCardClick}
       >
         <CardContent className="p-0">
           <View className="cover-section relative">
@@ -275,14 +280,24 @@ export default function PostsPage() {
               src={post.coverUrl}
               mode="aspectFill"
               className="w-full h-48"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleCardClick()
+              }}
             />
             {post.type === 'video' && (
-              <View className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+              <View
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleCardClick()
+                }}
+              >
                 <Play size={48} color="#ffffff" />
               </View>
             )}
             {statusBadge && (
-              <View className="absolute top-2 right-2">
+              <View className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
                 {statusBadge}
               </View>
             )}

@@ -328,10 +328,6 @@ export default function PostDetailPage() {
                     enableProgressGesture
                     showProgress
                     objectFit="contain"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      console.log('视频被点击')
-                    }}
                     onError={handleVideoError}
                     onPlay={() => {
                       console.log('视频开始播放')
