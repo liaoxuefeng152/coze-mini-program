@@ -5,6 +5,7 @@ import { ArrowLeft, Heart, MessageCircle, Share2, Send } from 'lucide-react-taro
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import './detail.css'
 
@@ -147,6 +148,7 @@ export default function PostDetailPage() {
   const [isLiked, setIsLiked] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [videoError, setVideoError] = useState(false)
+  const [commentText, setCommentText] = useState('')
 
   useLoad((options) => {
     const postId = options.id
@@ -197,6 +199,36 @@ export default function PostDetailPage() {
 
   const handleShare = () => {
     Taro.showToast({ title: '分享成功', icon: 'success' })
+  }
+
+  // 滚动到评论区
+  const handleScrollToComments = (e) => {
+    e.stopPropagation()  // 防止事件冒泡
+    console.log('滚动到评论区')
+    Taro.pageScrollTo({
+      selector: '.comments-section',
+      duration: 300
+    })
+  }
+
+  // 提交评论
+  const handleSubmitComment = () => {
+    if (!commentText.trim()) {
+      Taro.showToast({
+        title: '请输入评论内容',
+        icon: 'none'
+      })
+      return
+    }
+
+    console.log('提交评论:', commentText)
+    Taro.showToast({
+      title: '评论成功',
+      icon: 'success'
+    })
+
+    // 清空评论输入框
+    setCommentText('')
   }
 
   // 点击图片放大
@@ -296,6 +328,10 @@ export default function PostDetailPage() {
                     enableProgressGesture
                     showProgress
                     objectFit="contain"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      console.log('视频被点击')
+                    }}
                     onError={handleVideoError}
                     onPlay={() => {
                       console.log('视频开始播放')
@@ -360,18 +396,36 @@ export default function PostDetailPage() {
           </View>
 
           <View className="stats-section flex items-center gap-6 mb-4">
-            <View className="flex items-center gap-1 text-gray-500">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 text-gray-500 p-0"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleLike()
+              }}
+            >
               <Heart size={16} color={isLiked ? '#FF6B8B' : '#999999'} />
               <Text className="text-sm">{post.likes + (isLiked ? 1 : 0)}</Text>
-            </View>
-            <View className="flex items-center gap-1 text-gray-500">
+            </Button>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 text-gray-500 p-0"
+              onClick={handleScrollToComments}
+            >
               <MessageCircle size={16} color="#999999" />
               <Text className="text-sm">{post.comments}</Text>
-            </View>
-            <View className="flex items-center gap-1 text-gray-500">
+            </Button>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 text-gray-500 p-0"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleShare()
+              }}
+            >
               <Share2 size={16} color="#999999" />
               <Text className="text-sm">分享</Text>
-            </View>
+            </Button>
           </View>
 
           <Separator />
@@ -423,13 +477,27 @@ export default function PostDetailPage() {
             </Button>
           </View>
           <View className="flex-1 flex items-center bg-gray-100 rounded-full px-4 py-2">
-            <Text
-              className="text-sm text-gray-400 flex-1"
-              onClick={() => {}}
-            >
-              写评论...
-            </Text>
-            <Send size={16} color="#FF6B8B" />
+            <Textarea
+              className="text-sm flex-1"
+              style={{
+                backgroundColor: 'transparent',
+                height: '24px',
+                minHeight: '24px',
+                lineHeight: '24px'
+              }}
+              placeholder="写评论..."
+              value={commentText}
+              onInput={(e) => setCommentText(e.detail.value)}
+              onConfirm={handleSubmitComment}
+              maxlength={200}
+              cursorSpacing={10}
+            />
+            <Send
+              size={16}
+              color="#FF6B8B"
+              onClick={handleSubmitComment}
+              style={{ flexShrink: 0 }}
+            />
           </View>
         </View>
       </View>
