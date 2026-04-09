@@ -55,10 +55,10 @@ export default defineAppConfig({
         selectedIconPath: './assets/tabbar/users-active.png',
       },
       {
-        pagePath: 'pages/likes/index',
-        text: '喜欢',
-        iconPath: './assets/tabbar/heart.png',
-        selectedIconPath: './assets/tabbar/heart-active.png',
+        pagePath: 'pages/posts/index',
+        text: '动态',
+        iconPath: './assets/tabbar/play.png',
+        selectedIconPath: './assets/tabbar/play-active.png',
       },
       {
         pagePath: 'pages/me/index',
