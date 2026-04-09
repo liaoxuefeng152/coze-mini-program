@@ -150,18 +150,33 @@ export default function PostDetailPage() {
 
   useLoad((options) => {
     const postId = options.id
-    console.log('详情页接收到的动态 ID:', postId)
+    console.log('=== 详情页加载 ===')
+    console.log('接收到的动态 ID:', postId)
+
     const foundPost = allPosts.find(p => p.id === postId)
     console.log('找到的动态数据:', foundPost)
+
     if (foundPost) {
       console.log('动态类型:', foundPost.type)
+      console.log('是否为视频:', foundPost.type === 'video')
       console.log('视频 URL:', foundPost.videoUrl)
+      console.log('封面 URL:', foundPost.coverUrl)
       console.log('图片数组:', foundPost.images)
+      console.log('================')
+
       setPost(foundPost)
-      // 重置视频错误状态
-      setVideoError(false)
+      setVideoError(false)  // 重置错误状态
+
+      // 延迟检查渲染状态
+      setTimeout(() => {
+        console.log('延迟检查：post.state:', post)
+      }, 1000)
     } else {
       console.error('未找到动态，ID:', postId)
+      Taro.showToast({
+        title: '动态不存在',
+        icon: 'none'
+      })
     }
   })
 
@@ -249,83 +264,111 @@ export default function PostDetailPage() {
           </Text>
 
           {/* 根据动态类型显示不同内容 */}
-          {post.type === 'video' && post.videoUrl ? (
-            <View className="video-container mb-4 relative w-full" style={{ borderRadius: '8px', overflow: 'hidden' }}>
-              {videoError ? (
-                <View className="video-error flex items-center justify-center" style={{ height: '400px', backgroundColor: '#f5f5f5' }}>
-                  <Text className="text-gray-500">视频加载失败，请检查网络</Text>
-                </View>
-              ) : (
-                <Video
-                  id={`video-${post.id}`}
-                  src={post.videoUrl}
-                  className="w-full"
-                  style={{ height: '400px', display: 'block' }}
-                  controls
-                  poster={post.coverUrl}
-                  autoplay={false}
-                  loop={false}
-                  muted={false}
-                  showProgress
-                  showFullscreenBtn
-                  showPlayBtn
-                  showCenterPlayBtn
-                  enableProgressGesture
-                  onError={handleVideoError}
-                  onPlay={() => console.log('视频开始播放')}
-                  onPause={() => console.log('视频暂停')}
-                  onEnded={() => console.log('视频播放结束')}
-                />
-              )}
-            </View>
-          ) : (
-            <View className="image-container mb-4 relative w-full">
-              {/* 单张图片 */}
-              {(!post.images || post.images.length === 0) ? (
-                <Image
-                  src={post.coverUrl}
-                  mode="aspectFill"
-                  className="w-full rounded-lg"
-                  style={{ aspectRatio: '16/9' }}
-                  onClick={() => handleImagePreview(0)}
-                />
-              ) : (
-                /* 多张图片滑动 */
-                <View className="relative">
-                  <Swiper
-                    className="image-swiper w-full rounded-lg"
-                    style={{ aspectRatio: '16/9' }}
-                    indicatorDots
-                    indicatorColor="rgba(0, 0, 0, 0.3)"
-                    indicatorActiveColor="#FF6B8B"
-                    circular={false}
-                    onChange={(e) => {
-                      setCurrentImageIndex(e.detail.current)
+          <View className="media-container mb-4">
+            {(() => {
+              console.log('渲染检查：', {
+                type: post.type,
+                isVideo: post.type === 'video',
+                hasVideoUrl: !!post.videoUrl,
+                shouldShowVideo: post.type === 'video' && post.videoUrl
+              })
+
+              if (post.type === 'video' && post.videoUrl) {
+                return (
+                  <View
+                    className="video-wrapper"
+                    style={{
+                      width: '100%',
+                      height: '400px',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      backgroundColor: '#000'
                     }}
                   >
-                    {post.images.map((imgUrl, index) => (
-                      <SwiperItem key={index}>
-                        <Image
-                          src={imgUrl}
-                          mode="aspectFill"
-                          className="w-full h-full"
-                          onClick={() => handleImagePreview(index)}
-                        />
-                      </SwiperItem>
-                    ))}
-                  </Swiper>
-                  {/* 图片数量指示器 */}
-                  {post.images.length > 1 && (
-                    <View className="absolute top-2 right-2 bg-black bg-opacity-50 px-2 py-1 rounded-full">
-                      <Text className="text-xs text-white">
-                        {currentImageIndex + 1} / {post.images.length}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              )}
-            </View>
-          )}
+                    {videoError ? (
+                      <View className="video-error flex flex-col items-center justify-center h-full">
+                        <Text className="text-gray-500 mb-2">视频加载失败</Text>
+                        <Text className="text-xs text-gray-400">请检查网络或稍后重试</Text>
+                      </View>
+                    ) : (
+                      <Video
+                        id={`video-${post.id}`}
+                        src={post.videoUrl}
+                        style={{ width: '100%', height: '100%' }}
+                        controls
+                        poster={post.coverUrl}
+                        autoplay={false}
+                        loop={false}
+                        muted={false}
+                        showPlayBtn
+                        showCenterPlayBtn
+                        showFullscreenBtn
+                        enableProgressGesture
+                        showProgress
+                        objectFit="contain"
+                        onError={handleVideoError}
+                        onPlay={() => {
+                          console.log('视频开始播放')
+                          Taro.showToast({ title: '开始播放', icon: 'success', duration: 1000 })
+                        }}
+                        onPause={() => console.log('视频暂停')}
+                        onEnded={() => console.log('视频播放结束')}
+                      />
+                    )}
+                  </View>
+                )
+              } else {
+                return (
+                  <View className="image-container relative w-full">
+                    {/* 单张图片 */}
+                    {(!post.images || post.images.length === 0) ? (
+                      <Image
+                        src={post.coverUrl}
+                        mode="aspectFill"
+                        className="w-full rounded-lg"
+                        style={{ aspectRatio: '16/9' }}
+                        onClick={() => handleImagePreview(0)}
+                      />
+                    ) : (
+                      <View className="relative">
+                        {/* 多张图片滑动 */}
+                        <Swiper
+                          className="image-swiper w-full rounded-lg"
+                          style={{ aspectRatio: '16/9' }}
+                          indicatorDots
+                          indicatorColor="rgba(0, 0, 0, 0.3)"
+                          indicatorActiveColor="#FF6B8B"
+                          circular={false}
+                          onChange={(e) => {
+                            setCurrentImageIndex(e.detail.current)
+                          }}
+                        >
+                          {post.images.map((imgUrl, index) => (
+                            <SwiperItem key={index}>
+                              <Image
+                                src={imgUrl}
+                                mode="aspectFill"
+                                className="w-full h-full"
+                                onClick={() => handleImagePreview(index)}
+                              />
+                            </SwiperItem>
+                          ))}
+                        </Swiper>
+                        {/* 图片数量指示器 */}
+                        {post.images.length > 1 && (
+                          <View className="absolute top-2 right-2 bg-black bg-opacity-50 px-2 py-1 rounded-full">
+                            <Text className="text-xs text-white">
+                              {currentImageIndex + 1} / {post.images.length}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                  </View>
+                )
+              }
+            })()}
+          </View>
 
           <View className="stats-section flex items-center gap-6 mb-4">
             <View className="flex items-center gap-1 text-gray-500">
