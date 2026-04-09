@@ -1,4 +1,4 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import { Heart, X, Info, Crown, Star, Search, MessageCircle, CircleCheck } from 'lucide-react-taro'
@@ -16,6 +16,7 @@ interface UserProfile {
   education: string
   occupation: string
   avatarUrl: string
+  photos: string[]
   matchScore: number
   matchReasons: string[]
   isVerified: boolean
@@ -34,6 +35,12 @@ export default function IndexPage() {
       education: '本科',
       occupation: '产品经理',
       avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop'
+      ],
       matchScore: 95,
       matchReasons: ['年龄相仿', '同在北京', '都喜欢健身', '星座匹配'],
       isVerified: true,
@@ -48,6 +55,11 @@ export default function IndexPage() {
       education: '硕士',
       occupation: '设计师',
       avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&h=800&fit=crop'
+      ],
       matchScore: 92,
       matchReasons: ['学历匹配', '都喜欢旅行', '品味相似'],
       isVerified: true,
@@ -62,6 +74,11 @@ export default function IndexPage() {
       education: '本科',
       occupation: '教师',
       avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&h=800&fit=crop'
+      ],
       matchScore: 88,
       matchReasons: ['都喜欢读书', '性格互补', '职业稳定'],
       isVerified: true,
@@ -76,6 +93,12 @@ export default function IndexPage() {
       education: '本科',
       occupation: '运营专员',
       avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop'
+      ],
       matchScore: 90,
       matchReasons: ['同在浙江', '都喜欢美食', '生活态度积极'],
       isVerified: true,
@@ -90,6 +113,10 @@ export default function IndexPage() {
       education: '本科',
       occupation: '护士',
       avatarUrl: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop'
+      ],
       matchScore: 85,
       matchReasons: ['都喜欢宠物', '性格温和', '生活习惯健康'],
       isVerified: false,
@@ -104,6 +131,11 @@ export default function IndexPage() {
       education: '硕士',
       occupation: '医生',
       avatarUrl: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop'
+      ],
       matchScore: 93,
       matchReasons: ['高学历匹配', '职业稳定', '家庭观念强'],
       isVerified: true,
@@ -118,6 +150,9 @@ export default function IndexPage() {
       education: '本科',
       occupation: '学生',
       avatarUrl: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop'
+      ],
       matchScore: 80,
       matchReasons: ['年龄相近', '都在学习', '充满活力'],
       isVerified: false,
@@ -132,6 +167,11 @@ export default function IndexPage() {
       education: '硕士',
       occupation: '律师',
       avatarUrl: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop',
+      photos: [
+        'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop',
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop'
+      ],
       matchScore: 91,
       matchReasons: ['成熟稳重', '都有事业心', '价值观一致'],
       isVerified: true,
@@ -217,11 +257,30 @@ export default function IndexPage() {
             <Card className="user-card overflow-hidden">
               <CardContent className="p-0">
                 <View className="relative">
-                  <Image
-                    src={currentUser.avatarUrl}
-                    mode="aspectFill"
-                    className="w-full h-[450px]"
-                  />
+                  <Swiper
+                    className="photo-swiper"
+                    indicatorDots
+                    indicatorColor="rgba(255, 255, 255, 0.5)"
+                    indicatorActiveColor="#FF6B8B"
+                    circular
+                    autoplay={false}
+                  >
+                    {currentUser.photos.map((photo, index) => (
+                      <SwiperItem key={index}>
+                        <Image
+                          src={photo}
+                          mode="aspectFill"
+                          className="w-full h-[520px]"
+                          onClick={() => {
+                            Taro.previewImage({
+                              urls: currentUser.photos,
+                              current: photo
+                            })
+                          }}
+                        />
+                      </SwiperItem>
+                    ))}
+                  </Swiper>
                   {currentUser.isVerified && (
                     <Badge className="absolute top-4 left-4 bg-[#4CAF50] text-white flex items-center gap-1">
                       <CircleCheck size={12} color="#ffffff" />
@@ -234,6 +293,9 @@ export default function IndexPage() {
                       <Text>VIP</Text>
                     </Badge>
                   )}
+                  <View className="photo-count absolute bottom-4 left-4 bg-black bg-opacity-50 px-2 py-1 rounded-full">
+                    <Text className="text-xs text-white">{currentUser.photos.length}张照片</Text>
+                  </View>
                 </View>
 
                 <View className="user-info-section p-4">
