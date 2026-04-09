@@ -366,15 +366,18 @@ export default function PostDetailPage() {
                 {!isPlaying ? (
                   /* 显示封面图 + 播放图标 */
                   <View
-                    className="video-cover w-full rounded-lg overflow-hidden"
-                    style={{ aspectRatio: '16/9', backgroundColor: '#F0F0F0' }}
+                    className="video-cover w-full rounded-lg overflow-hidden relative"
+                    style={{ height: '200px', backgroundColor: '#F0F0F0' }}
                   >
                     <Image
                       src={post.coverUrl}
                       mode="aspectFill"
                       className="w-full h-full"
+                      onLoad={() => {
+                        console.log('封面图加载成功')
+                      }}
                       onError={() => {
-                        console.log('封面图加载失败')
+                        console.log('封面图加载失败，URL:', post.coverUrl)
                       }}
                     />
                     <View
@@ -392,7 +395,7 @@ export default function PostDetailPage() {
                   <View className="relative w-full">
                     <View
                       className="video-player w-full rounded-lg"
-                      style={{ aspectRatio: '16/9', overflow: 'hidden', backgroundColor: '#000' }}
+                      style={{ height: '200px', overflow: 'hidden', backgroundColor: '#000' }}
                     >
                       {videoError ? (
                         <View className="video-error flex flex-col items-center justify-center h-full">
@@ -458,7 +461,7 @@ export default function PostDetailPage() {
                     src={post.coverUrl}
                     mode="aspectFill"
                     className="w-full h-full"
-                    style={{ aspectRatio: '16/9' }}
+                    style={{ height: '200px' }}
                     onClick={() => handleImagePreview(0)}
                   />
                 ) : (
@@ -466,7 +469,7 @@ export default function PostDetailPage() {
                         {/* 多张图片滑动 */}
                         <Swiper
                           className="image-swiper w-full h-full"
-                          style={{ aspectRatio: '16/9' }}
+                          style={{ height: '200px' }}
                           indicatorDots
                           indicatorColor="rgba(0, 0, 0, 0.3)"
                           indicatorActiveColor="#FF6B8B"
