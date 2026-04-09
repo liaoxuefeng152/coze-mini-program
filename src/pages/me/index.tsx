@@ -24,6 +24,10 @@ export default function ProfilePage() {
     Taro.navigateTo({ url: '/pages/profile/edit' })
   }
 
+  const handleViewProfile = () => {
+    Taro.navigateTo({ url: '/pages/profile/detail?self=true' })
+  }
+
   const handlePageNavigate = (path: string) => {
     if (path === '/pages/messages/index') {
       Taro.navigateTo({ url: '/pages/chat/list' })
@@ -51,10 +55,12 @@ export default function ProfilePage() {
           <View className="cover-gradient h-32 bg-gradient-to-br from-[#FF6B8B] to-[#FF8FAB]" />
           <View className="profile-info -mt-16 px-4">
             <View className="flex items-end gap-4 mb-4">
-              <Avatar className="w-24 h-24 border-4 border-white">
-                <AvatarImage src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" />
-                <AvatarFallback>我</AvatarFallback>
-              </Avatar>
+              <View onClick={handleViewProfile}>
+                <Avatar className="w-24 h-24 border-4 border-white">
+                  <AvatarImage src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" />
+                  <AvatarFallback>我</AvatarFallback>
+                </Avatar>
+              </View>
               <View className="flex-1 pb-2">
                 <View className="flex items-center gap-2 mb-1">
                   <Text className="text-xl font-bold">小可爱</Text>
@@ -122,16 +128,6 @@ export default function ProfilePage() {
                 <View className="flex items-center gap-3">
                   <Heart size={20} color="#FF6B8B" />
                   <Text className="text-base">喜欢与匹配</Text>
-                </View>
-                <ChevronRight size={18} color="#999999" />
-              </View>
-
-              <Separator />
-
-              <View className="menu-item flex items-center justify-between p-4" onClick={() => handlePageNavigate('/pages/profile/detail?self=true')}>
-                <View className="flex items-center gap-3">
-                  <User size={20} color="#3B82F6" />
-                  <Text className="text-base">我的资料</Text>
                 </View>
                 <ChevronRight size={18} color="#999999" />
               </View>

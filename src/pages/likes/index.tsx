@@ -26,7 +26,7 @@ export default function LikesPage() {
       id: '1',
       nickname: '小美',
       age: 26,
-      avatarUrl: 'https://via.placeholder.com/100',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
       matchScore: 92,
       time: '2小时前',
       isMutual: true
@@ -35,7 +35,7 @@ export default function LikesPage() {
       id: '2',
       nickname: '小红',
       age: 25,
-      avatarUrl: 'https://via.placeholder.com/100',
+      avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop',
       matchScore: 85,
       time: '1天前',
       isMutual: false
@@ -46,7 +46,7 @@ export default function LikesPage() {
       id: '3',
       nickname: '小芳',
       age: 28,
-      avatarUrl: 'https://via.placeholder.com/100',
+      avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop',
       matchScore: 88,
       time: '3小时前',
       isMutual: false
@@ -57,7 +57,7 @@ export default function LikesPage() {
       id: '1',
       nickname: '小美',
       age: 26,
-      avatarUrl: 'https://via.placeholder.com/100',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
       matchScore: 92,
       time: '今天',
       isMutual: true

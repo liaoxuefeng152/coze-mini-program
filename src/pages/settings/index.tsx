@@ -1,6 +1,6 @@
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { ArrowLeft, ChevronRight, Bell, Lock, Info, LogOut } from 'lucide-react-taro'
+import { ArrowLeft, ChevronRight, Bell, Lock, Info, LogOut, UserX } from 'lucide-react-taro'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -15,6 +15,39 @@ export default function SettingsPage() {
         if (res.confirm) {
           Taro.showToast({ title: '已退出登录', icon: 'success' })
           Taro.reLaunch({ url: '/pages/login/index' })
+        }
+      }
+    })
+  }
+
+  const handleDestroyAccount = () => {
+    Taro.showModal({
+      title: '注销账号',
+      content: '注销后您的所有数据将被永久删除，包括：个人资料、动态、聊天记录、认证信息等。此操作不可恢复！\n\n请确认是否继续？',
+      confirmText: '确认注销',
+      confirmColor: '#EF4444',
+      success: (res) => {
+        if (res.confirm) {
+          Taro.showModal({
+            title: '身份验证',
+            content: '为保护您的账号安全，请输入登录密码确认注销',
+            success: (verifyRes) => {
+              if (verifyRes.confirm) {
+                Taro.showLoading({ title: '处理中...' })
+                setTimeout(() => {
+                  Taro.hideLoading()
+                  Taro.showModal({
+                    title: '注销成功',
+                    content: '您的账号已成功注销，感谢您的使用，再见！',
+                    showCancel: false,
+                    success: () => {
+                      Taro.reLaunch({ url: '/pages/login/index' })
+                    }
+                  })
+                }, 1500)
+              }
+            }
+          })
         }
       }
     })
@@ -107,6 +140,18 @@ export default function SettingsPage() {
             <View className="menu-item flex items-center justify-between p-4" onClick={handleClearCache}>
               <Text className="text-base">清除缓存</Text>
               <Text className="text-sm text-gray-400">23.5 MB</Text>
+            </View>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-4">
+          <CardContent className="p-0">
+            <View className="menu-item flex items-center justify-between p-4 text-red-500" onClick={handleDestroyAccount}>
+              <View className="flex items-center gap-3">
+                <UserX size={20} color="#EF4444" />
+                <Text className="text-base text-red-500">注销账号</Text>
+              </View>
+              <ChevronRight size={18} color="#EF4444" />
             </View>
           </CardContent>
         </Card>
