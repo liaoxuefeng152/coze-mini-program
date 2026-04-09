@@ -363,76 +363,89 @@ export default function PostDetailPage() {
             {/* 视频类型 */}
             {post.type === 'video' && post.videoUrl && (
               <View className="relative w-full">
-                <View
-                  className="video-player w-full rounded-lg overflow-hidden"
-                  style={{ aspectRatio: '16/9', backgroundColor: '#000' }}
-                >
-                  {videoError ? (
-                    <View className="video-error flex flex-col items-center justify-center h-full">
-                      <Text className="text-gray-500 mb-2">视频加载失败</Text>
-                      <Text className="text-xs text-gray-400">请检查网络或稍后重试</Text>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mt-4"
-                        onClick={() => setVideoError(false)}
-                      >
-                        重试
-                      </Button>
+                {!isPlaying ? (
+                  /* 显示封面图 + 播放图标 */
+                  <View
+                    className="video-cover w-full rounded-lg overflow-hidden"
+                    style={{ aspectRatio: '16/9', backgroundColor: '#F0F0F0' }}
+                  >
+                    <Image
+                      src={post.coverUrl}
+                      mode="aspectFill"
+                      className="w-full h-full"
+                      onError={() => {
+                        console.log('封面图加载失败')
+                      }}
+                    />
+                    <View
+                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20"
+                      onClick={handlePlayVideo}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <View className="bg-black bg-opacity-40 rounded-full p-4" style={{ backdropFilter: 'blur(4px)' }}>
+                        <Play size={64} color="#ffffff" />
+                      </View>
                     </View>
-                  ) : (
-                    <>
-                      <Video
-                        id={`video-${post.id}`}
-                        src={post.videoUrl}
-                        className="w-full h-full"
-                        controls={isPlaying}
-                        poster={post.coverUrl}
-                        autoplay={isPlaying}
-                        loop={false}
-                        muted={false}
-                        showPlayBtn
-                        showCenterPlayBtn
-                        showFullscreenBtn
-                        enableProgressGesture
-                        showProgress={isPlaying}
-                        objectFit="contain"
-                        onError={handleVideoError}
-                        onPlay={() => {
-                          console.log('视频开始播放')
-                        }}
-                        onPause={() => console.log('视频暂停')}
-                        onEnded={() => {
-                          console.log('视频播放结束')
-                          setIsPlaying(false)
-                        }}
-                      />
-                      {/* 未播放时显示播放按钮覆盖层 */}
-                      {!isPlaying && (
-                        <View
-                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-10"
-                          onClick={handlePlayVideo}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <View className="bg-black bg-opacity-40 rounded-full p-4" style={{ backdropFilter: 'blur(4px)' }}>
-                            <Play size={64} color="#ffffff" />
-                          </View>
+                  </View>
+                ) : (
+                  /* 显示视频播放器 */
+                  <View className="relative w-full">
+                    <View
+                      className="video-player w-full rounded-lg"
+                      style={{ aspectRatio: '16/9', overflow: 'hidden', backgroundColor: '#000' }}
+                    >
+                      {videoError ? (
+                        <View className="video-error flex flex-col items-center justify-center h-full">
+                          <Text className="text-gray-500 mb-2">视频加载失败</Text>
+                          <Text className="text-xs text-gray-400">请检查网络或稍后重试</Text>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="mt-4"
+                            onClick={handleCloseVideo}
+                          >
+                            关闭
+                          </Button>
                         </View>
+                      ) : (
+                        <Video
+                          id={`video-${post.id}`}
+                          src={post.videoUrl}
+                          className="w-full h-full"
+                          controls
+                          poster={post.coverUrl}
+                          autoplay
+                          loop={false}
+                          muted={false}
+                          showPlayBtn
+                          showCenterPlayBtn
+                          showFullscreenBtn
+                          enableProgressGesture
+                          showProgress
+                          objectFit="contain"
+                          onError={handleVideoError}
+                          onPlay={() => {
+                            console.log('视频开始播放')
+                          }}
+                          onPause={() => console.log('视频暂停')}
+                          onEnded={() => {
+                            console.log('视频播放结束')
+                            setIsPlaying(false)
+                          }}
+                        />
                       )}
-                      {/* 播放时显示关闭按钮 */}
-                      {isPlaying && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="absolute top-2 right-2 bg-black bg-opacity-50"
-                          onClick={handleCloseVideo}
-                        >
-                          <Text className="text-white text-xs">✕ 关闭</Text>
-                        </Button>
-                      )}
-                    </>
-                  )}
-                </View>
+                    </View>
+                    {/* 关闭按钮 */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute top-2 right-2 bg-black bg-opacity-50"
+                      onClick={handleCloseVideo}
+                    >
+                      <Text className="text-white text-xs">✕ 关闭</Text>
+                    </Button>
+                  </View>
+                )}
               </View>
             )}
 
