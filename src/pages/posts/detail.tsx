@@ -26,6 +26,16 @@ interface Post {
   createdAt: string
 }
 
+interface Comment {
+  id: string
+  userId: string
+  nickname: string
+  avatarUrl?: string
+  content: string
+  likes: number
+  createdAt: string
+}
+
 // 模拟数据，与 posts/index.tsx 保持一致
 const allPosts: Post[] = [
   {
@@ -150,6 +160,16 @@ export default function PostDetailPage() {
   const [videoError, setVideoError] = useState(false)
   const [commentText, setCommentText] = useState('')
   const [isPlaying, setIsPlaying] = useState(false)
+  const [comments, setComments] = useState<Comment[]>([
+    {
+      id: '1',
+      userId: 'guest1',
+      nickname: '游客',
+      content: '这条动态真棒！👍',
+      likes: 0,
+      createdAt: '刚刚'
+    }
+  ])
 
   useLoad((options) => {
     const postId = options.id
@@ -236,6 +256,27 @@ export default function PostDetailPage() {
     }
 
     console.log('提交评论:', commentText)
+
+    // 创建新评论
+    const newComment: Comment = {
+      id: Date.now().toString(),
+      userId: 'current-user',
+      nickname: '我',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+      content: commentText.trim(),
+      likes: 0,
+      createdAt: '刚刚'
+    }
+
+    // 添加到评论列表
+    setComments([...comments, newComment])
+
+    // 更新动态的评论数
+    if (post) {
+      setPost({ ...post, comments: post.comments + 1 })
+    }
+
+    // 显示成功提示
     Taro.showToast({
       title: '评论成功',
       icon: 'success'
@@ -243,6 +284,14 @@ export default function PostDetailPage() {
 
     // 清空评论输入框
     setCommentText('')
+
+    // 滚动到评论区
+    setTimeout(() => {
+      Taro.pageScrollTo({
+        selector: '.comments-section',
+        duration: 300
+      })
+    }, 100)
   }
 
   // 点击图片放大
@@ -317,19 +366,25 @@ export default function PostDetailPage() {
                 {!isPlaying ? (
                   /* 显示封面图 + 播放图标 */
                   <View
-                    className="video-cover w-full rounded-lg"
-                    style={{ aspectRatio: '16/9', overflow: 'hidden', backgroundColor: '#000' }}
+                    className="video-cover w-full rounded-lg overflow-hidden"
+                    style={{ aspectRatio: '16/9', backgroundColor: '#F0F0F0' }}
                   >
                     <Image
                       src={post.coverUrl}
                       mode="aspectFill"
                       className="w-full h-full"
+                      onError={() => {
+                        console.log('封面图加载失败')
+                      }}
                     />
                     <View
-                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30"
+                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20"
                       onClick={handlePlayVideo}
+                      style={{ cursor: 'pointer' }}
                     >
-                      <Play size={64} color="#ffffff" />
+                      <View className="bg-black bg-opacity-40 rounded-full p-4" style={{ backdropFilter: 'blur(4px)' }}>
+                        <Play size={64} color="#ffffff" />
+                      </View>
                     </View>
                   </View>
                 ) : (
@@ -482,26 +537,37 @@ export default function PostDetailPage() {
 
           <View className="comments-section mt-4">
             <Text className="text-base font-semibold mb-3">评论 ({post.comments})</Text>
-            <View className="comment-item mb-4">
-              <View className="flex gap-3">
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback>访</AvatarFallback>
-                </Avatar>
-                <View className="flex-1">
-                  <View className="flex items-center gap-2 mb-1">
-                    <Text className="text-sm font-semibold">游客</Text>
-                    <Text className="text-xs text-gray-500">刚刚</Text>
-                  </View>
-                  <Text className="text-sm text-gray-800 mb-1">这条动态真棒！👍</Text>
-                  <View className="flex items-center gap-2">
-                    <View className="flex items-center gap-1">
-                      <Heart size={12} color="#999999" />
-                      <Text className="text-xs text-gray-500">0</Text>
+            {comments.length === 0 ? (
+              <View className="text-center py-8">
+                <Text className="text-sm text-gray-500">还没有评论，快来发表第一条评论吧~</Text>
+              </View>
+            ) : (
+              comments.map((comment) => (
+                <View key={comment.id} className="comment-item mb-4">
+                  <View className="flex gap-3">
+                    <Avatar className="w-8 h-8">
+                      {comment.avatarUrl ? (
+                        <AvatarImage src={comment.avatarUrl} />
+                      ) : null}
+                      <AvatarFallback>{comment.nickname[0]}</AvatarFallback>
+                    </Avatar>
+                    <View className="flex-1">
+                      <View className="flex items-center gap-2 mb-1">
+                        <Text className="text-sm font-semibold">{comment.nickname}</Text>
+                        <Text className="text-xs text-gray-500">{comment.createdAt}</Text>
+                      </View>
+                      <Text className="text-sm text-gray-800 mb-1">{comment.content}</Text>
+                      <View className="flex items-center gap-2">
+                        <View className="flex items-center gap-1">
+                          <Heart size={12} color="#999999" />
+                          <Text className="text-xs text-gray-500">{comment.likes}</Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </View>
+              ))
+            )}
           </View>
         </View>
       </View>
