@@ -49,6 +49,18 @@ export default function ProfileEditPage() {
     }, 1500)
   }
 
+  const handleEditBasicInfo = () => {
+    Taro.navigateTo({ url: '/pages/auth/basic' })
+  }
+
+  const handlePersonalityTest = () => {
+    Taro.showToast({ title: '功能开发中', icon: 'none' })
+  }
+
+  const handlePreferences = () => {
+    Taro.showToast({ title: '功能开发中', icon: 'none' })
+  }
+
   return (
     <View className="profile-edit-page h-full bg-[#FAFAFA] flex flex-col">
       <View className="header bg-white px-4 py-4 border-b border-gray-100">
@@ -104,13 +116,15 @@ export default function ProfileEditPage() {
         <Card className="mb-4">
           <CardContent className="p-4">
             <Text className="text-base font-semibold mb-3">个人简介</Text>
-            <Textarea
-              style={{ width: '100%', minHeight: '120px' }}
-              placeholder="介绍一下自己吧..."
-              value={bio}
-              onInput={(e) => setBio(e.detail.value)}
-              maxlength={200}
-            />
+            <View className="bg-gray-50 rounded-xl p-3">
+              <Textarea
+                style={{ width: '100%', minHeight: '120px', backgroundColor: 'transparent' }}
+                placeholder="介绍一下自己吧..."
+                value={bio}
+                onInput={(e) => setBio(e.detail.value)}
+                maxlength={200}
+              />
+            </View>
             <Text className="text-xs text-gray-500 text-right mt-1">{bio.length}/200</Text>
           </CardContent>
         </Card>
@@ -159,15 +173,24 @@ export default function ProfileEditPage() {
 
         <Card className="mb-4">
           <CardContent className="p-4">
-            <View className="menu-item flex items-center justify-between py-3">
+            <View
+              className="menu-item flex items-center justify-between py-3 cursor-pointer"
+              onClick={handleEditBasicInfo}
+            >
               <Text className="text-base">编辑基础信息</Text>
               <Text className="text-sm text-gray-400">{`>`}</Text>
             </View>
-            <View className="menu-item flex items-center justify-between py-3">
+            <View
+              className="menu-item flex items-center justify-between py-3 cursor-pointer"
+              onClick={handlePersonalityTest}
+            >
               <Text className="text-base">性格测试</Text>
               <Text className="text-sm text-gray-400">{`>`}</Text>
             </View>
-            <View className="menu-item flex items-center justify-between py-3">
+            <View
+              className="menu-item flex items-center justify-between py-3 cursor-pointer"
+              onClick={handlePreferences}
+            >
               <Text className="text-base">择偶偏好</Text>
               <Text className="text-sm text-gray-400">{`>`}</Text>
             </View>
