@@ -61,7 +61,7 @@ export default defineAppConfig({
         selectedIconPath: './assets/tabbar/play-active.png',
       },
       {
-        pagePath: 'pages/me/index',
+        pagePath: 'pages/profile/index',
         text: '我的',
         iconPath: './assets/tabbar/user.png',
         selectedIconPath: './assets/tabbar/user-active.png',
