@@ -265,73 +265,66 @@ export default function PostDetailPage() {
 
           {/* 根据动态类型显示不同内容 */}
           <View className="media-container mb-4">
-            {(() => {
-              console.log('渲染检查：', {
-                type: post.type,
-                isVideo: post.type === 'video',
-                hasVideoUrl: !!post.videoUrl,
-                shouldShowVideo: post.type === 'video' && post.videoUrl
-              })
-
-              if (post.type === 'video' && post.videoUrl) {
-                return (
-                  <View
-                    className="video-wrapper w-full rounded-lg"
-                    style={{
-                      aspectRatio: '16/9',
-                      overflow: 'hidden',
-                      backgroundColor: '#000'
-                    }}
-                  >
-                    {videoError ? (
-                      <View className="video-error flex flex-col items-center justify-center h-full">
-                        <Text className="text-gray-500 mb-2">视频加载失败</Text>
-                        <Text className="text-xs text-gray-400">请检查网络或稍后重试</Text>
-                      </View>
-                    ) : (
-                      <Video
-                        id={`video-${post.id}`}
-                        src={post.videoUrl}
-                        style={{ width: '100%', height: '100%' }}
-                        controls
-                        poster={post.coverUrl}
-                        autoplay={false}
-                        loop={false}
-                        muted={false}
-                        showPlayBtn
-                        showCenterPlayBtn
-                        showFullscreenBtn
-                        enableProgressGesture
-                        showProgress
-                        objectFit="contain"
-                        onError={handleVideoError}
-                        onPlay={() => {
-                          console.log('视频开始播放')
-                          Taro.showToast({ title: '开始播放', icon: 'success', duration: 1000 })
-                        }}
-                        onPause={() => console.log('视频暂停')}
-                        onEnded={() => console.log('视频播放结束')}
-                      />
-                    )}
+            {/* 视频类型 */}
+            {post.type === 'video' && post.videoUrl && (
+              <View
+                className="video-wrapper w-full rounded-lg"
+                style={{
+                  aspectRatio: '16/9',
+                  overflow: 'hidden',
+                  backgroundColor: '#000'
+                }}
+              >
+                {videoError ? (
+                  <View className="video-error flex flex-col items-center justify-center" style={{ height: '100%' }}>
+                    <Text className="text-gray-500 mb-2">视频加载失败</Text>
+                    <Text className="text-xs text-gray-400">请检查网络或稍后重试</Text>
                   </View>
-                )
-              } else {
-                return (
-                  <View className="image-container relative w-full">
-                    {/* 单张图片 */}
-                    {(!post.images || post.images.length === 0) ? (
-                      <Image
-                        src={post.coverUrl}
-                        mode="aspectFill"
-                        className="w-full rounded-lg"
-                        style={{ aspectRatio: '16/9' }}
-                        onClick={() => handleImagePreview(0)}
-                      />
-                    ) : (
+                ) : (
+                  <Video
+                    id={`video-${post.id}`}
+                    src={post.videoUrl}
+                    className="w-full h-full"
+                    controls
+                    poster={post.coverUrl}
+                    autoplay={false}
+                    loop={false}
+                    muted={false}
+                    showPlayBtn
+                    showCenterPlayBtn
+                    showFullscreenBtn
+                    enableProgressGesture
+                    showProgress
+                    objectFit="contain"
+                    onError={handleVideoError}
+                    onPlay={() => {
+                      console.log('视频开始播放')
+                      Taro.showToast({ title: '开始播放', icon: 'success', duration: 1000 })
+                    }}
+                    onPause={() => console.log('视频暂停')}
+                    onEnded={() => console.log('视频播放结束')}
+                  />
+                )}
+              </View>
+            )}
+
+            {/* 图片类型 */}
+            {post.type === 'image' && (
+              <View className="image-container relative w-full rounded-lg overflow-hidden">
+                {/* 单张图片 */}
+                {(!post.images || post.images.length === 0) ? (
+                  <Image
+                    src={post.coverUrl}
+                    mode="aspectFill"
+                    className="w-full h-full"
+                    style={{ aspectRatio: '16/9' }}
+                    onClick={() => handleImagePreview(0)}
+                  />
+                ) : (
                       <View className="relative">
                         {/* 多张图片滑动 */}
                         <Swiper
-                          className="image-swiper w-full rounded-lg"
+                          className="image-swiper w-full h-full"
                           style={{ aspectRatio: '16/9' }}
                           indicatorDots
                           indicatorColor="rgba(0, 0, 0, 0.3)"
@@ -363,9 +356,7 @@ export default function PostDetailPage() {
                       </View>
                     )}
                   </View>
-                )
-              }
-            })()}
+                )}
           </View>
 
           <View className="stats-section flex items-center gap-6 mb-4">
