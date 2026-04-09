@@ -234,25 +234,30 @@ export default function IndexPage() {
                       <Text>VIP</Text>
                     </Badge>
                   )}
-                  <View className="match-info absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-4">
-                    <Text className="text-white text-2xl font-bold mb-2">
+                </View>
+
+                <View className="user-info-section p-4">
+                  {/* 用户基本信息 */}
+                  <View className="mb-4">
+                    <Text className="text-2xl font-bold text-gray-900 mb-1">
                       {currentUser.nickname}, {currentUser.age}
                     </Text>
                     <View className="flex items-center gap-3 mb-2">
-                      <Text className="text-white text-base">{currentUser.height}cm</Text>
-                      <Text className="text-white text-base">{currentUser.city}</Text>
-                      <Text className="text-white text-base">{currentUser.occupation}</Text>
+                      <Text className="text-sm text-gray-600">{currentUser.height}cm</Text>
+                      <Text className="text-sm text-gray-600">·</Text>
+                      <Text className="text-sm text-gray-600">{currentUser.city}</Text>
+                      <Text className="text-sm text-gray-600">·</Text>
+                      <Text className="text-sm text-gray-600">{currentUser.occupation}</Text>
                     </View>
-                    <View className="flex items-center gap-1">
+                    <View className="flex items-center gap-2">
                       <Star size={16} color="#FF6B8B" />
-                      <Text className="text-[#FF6B8B] font-bold text-lg">
+                      <Text className="text-[#FF6B8B] font-bold text-base">
                         匹配度 {currentUser.matchScore}分
                       </Text>
                     </View>
                   </View>
-                </View>
 
-                <View className="info-section p-4">
+                  {/* 匹配原因 */}
                   <View className="mb-4">
                     <View className="flex items-center gap-2 mb-2">
                       <Info size={16} color="#FF6B8B" />
@@ -267,6 +272,7 @@ export default function IndexPage() {
                     </View>
                   </View>
 
+                  {/* 操作按钮 */}
                   <View className="actions flex gap-3">
                     <View style={{ flex: 1 }}>
                       <Button
