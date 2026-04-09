@@ -276,11 +276,9 @@ export default function PostDetailPage() {
               if (post.type === 'video' && post.videoUrl) {
                 return (
                   <View
-                    className="video-wrapper"
+                    className="video-wrapper w-full rounded-lg"
                     style={{
-                      width: '100%',
-                      height: '400px',
-                      borderRadius: '8px',
+                      aspectRatio: '16/9',
                       overflow: 'hidden',
                       backgroundColor: '#000'
                     }}

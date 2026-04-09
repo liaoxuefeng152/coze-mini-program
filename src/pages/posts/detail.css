@@ -2,6 +2,19 @@
   height: 100%;
 }
 
+/* 媒体容器样式 */
+.media-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 视频容器样式 */
+.video-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #000;
+}
+
 /* 图片容器样式 */
 .image-container {
   border-radius: 8px;
