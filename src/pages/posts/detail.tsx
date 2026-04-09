@@ -372,7 +372,8 @@ export default function PostDetailPage() {
                     <Image
                       src={post.coverUrl}
                       mode="aspectFill"
-                      className="w-full h-full"
+                      className="w-full"
+                      style={{ height: '200px', display: 'block' }}
                       onLoad={() => {
                         console.log('封面图加载成功')
                       }}
@@ -414,7 +415,8 @@ export default function PostDetailPage() {
                         <Video
                           id={`video-${post.id}`}
                           src={post.videoUrl}
-                          className="w-full h-full"
+                          className="w-full"
+                          style={{ height: '200px', display: 'block' }}
                           controls
                           poster={post.coverUrl}
                           autoplay
@@ -460,8 +462,8 @@ export default function PostDetailPage() {
                   <Image
                     src={post.coverUrl}
                     mode="aspectFill"
-                    className="w-full h-full"
-                    style={{ height: '200px' }}
+                    className="w-full"
+                    style={{ height: '200px', display: 'block' }}
                     onClick={() => handleImagePreview(0)}
                   />
                 ) : (
@@ -483,7 +485,8 @@ export default function PostDetailPage() {
                               <Image
                                 src={imgUrl}
                                 mode="aspectFill"
-                                className="w-full h-full"
+                                className="w-full"
+                                style={{ height: '200px', display: 'block' }}
                                 onClick={() => handleImagePreview(index)}
                               />
                             </SwiperItem>
