@@ -506,30 +506,37 @@ export default function PostDetailPage() {
         </View>
       </View>
 
-      <View className="footer bg-white px-4 py-3 border-t border-gray-100" style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-        <View className="flex items-center gap-2">
-          <View className="flex-1 flex items-center bg-gray-100 rounded-full px-4 py-2">
+      <View className="footer bg-white px-4 py-3 border-t border-gray-100" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100 }}>
+        <View className="flex items-center gap-3">
+          <View className="flex-1 relative">
             <Textarea
-              className="text-sm flex-1"
+              className="text-sm w-full"
               style={{
-                backgroundColor: 'transparent',
-                height: '24px',
-                minHeight: '24px',
-                lineHeight: '24px'
+                backgroundColor: '#F5F5F5',
+                borderRadius: '20px',
+                padding: '10px 40px 10px 16px',
+                minHeight: '40px',
+                maxHeight: '120px',
+                lineHeight: '20px',
+                boxSizing: 'border-box'
               }}
-              placeholder="写评论..."
+              placeholder="说点什么吧..."
               value={commentText}
               onInput={(e) => setCommentText(e.detail.value)}
               onConfirm={handleSubmitComment}
               maxlength={200}
               cursorSpacing={10}
+              disableDefaultPadding
             />
-            <Send
-              size={16}
-              color="#FF6B8B"
+            <View
+              className="absolute right-2 bottom-2"
               onClick={handleSubmitComment}
-              style={{ flexShrink: 0 }}
-            />
+              style={{ cursor: 'pointer' }}
+            >
+              <View className="bg-[#FF6B8B] rounded-full p-1">
+                <Send size={16} color="#ffffff" />
+              </View>
+            </View>
           </View>
         </View>
       </View>
