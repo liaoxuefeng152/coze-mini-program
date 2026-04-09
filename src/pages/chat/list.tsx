@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Heart, Trash2, Ban } from 'lucide-react-taro'
 import { Button } from '@/components/ui/button'
-import './index.css'
+import './list.css'
 
 interface ChatUser {
   id: string
