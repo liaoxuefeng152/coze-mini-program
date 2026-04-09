@@ -79,6 +79,10 @@ export default function ProfileDetailPage() {
     Taro.navigateTo({ url: '/pages/profile/edit' })
   }
 
+  const handleViewCreditScore = () => {
+    Taro.navigateTo({ url: '/pages/credit/detail' })
+  }
+
   return (
     <View className="profile-detail-page h-full bg-[#FAFAFA] flex flex-col">
       <View className="header bg-white px-4 py-4 border-b border-gray-100">
@@ -232,7 +236,7 @@ export default function ProfileDetailPage() {
                 <Text className="text-3xl font-bold text-[#FF6B8B]">{user.creditScore}</Text>
                 <Text className="text-sm text-gray-500 mt-1">信用等级：优秀</Text>
               </View>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleViewCreditScore}>
                 <Text className="text-sm">查看详情</Text>
               </Button>
             </View>

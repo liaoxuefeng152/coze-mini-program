@@ -50,6 +50,7 @@ export default defineAppConfig({
     'pages/blocklist/index',
     'pages/feedback/index',
     'pages/credit/index',
+    'pages/credit/detail',
     
     // 设置相关
     'pages/settings/index',
