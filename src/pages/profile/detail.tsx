@@ -1,5 +1,5 @@
 import { View, Text, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import { ArrowLeft, Heart, MessageCircle, Share2, MapPin, GraduationCap, Briefcase, Calendar } from 'lucide-react-taro'
 import { Card, CardContent } from '@/components/ui/card'
@@ -10,6 +10,12 @@ import './detail.css'
 
 export default function ProfileDetailPage() {
   const [isLiked, setIsLiked] = useState(false)
+  const [isSelf, setIsSelf] = useState(false)
+
+  useLoad((options) => {
+    // 从路由参数中获取 self 参数
+    setIsSelf(options.self === 'true')
+  })
 
   const [user] = useState({
     id: '1',
@@ -69,6 +75,10 @@ export default function ProfileDetailPage() {
     })
   }
 
+  const handleEditProfile = () => {
+    Taro.navigateTo({ url: '/pages/profile/edit' })
+  }
+
   return (
     <View className="profile-detail-page h-full bg-[#FAFAFA] flex flex-col">
       <View className="header bg-white px-4 py-4 border-b border-gray-100">
@@ -84,12 +94,17 @@ export default function ProfileDetailPage() {
             <Text className="text-lg font-semibold">{user.nickname}</Text>
           </View>
           <View className="flex items-center gap-2">
-            <Button variant="ghost" className="p-2" onClick={handleShare}>
-              <Share2 size={20} color="#999999" />
-            </Button>
-            <Button variant="ghost" className="p-2" onClick={handleBlock}>
-              <Text className="text-sm text-gray-600">拉黑</Text>
-            </Button>
+            {/* 不是自己的资料才显示分享和拉黑按钮 */}
+            {!isSelf && (
+              <>
+                <Button variant="ghost" className="p-2" onClick={handleShare}>
+                  <Share2 size={20} color="#999999" />
+                </Button>
+                <Button variant="ghost" className="p-2" onClick={handleBlock}>
+                  <Text className="text-sm text-gray-600">拉黑</Text>
+                </Button>
+              </>
+            )}
           </View>
         </View>
       </View>
@@ -137,23 +152,35 @@ export default function ProfileDetailPage() {
             ))}
           </View>
 
-          <View className="actions flex gap-3">
-            <Button
-              className="flex-1 bg-[#FF6B8B] text-white py-3 rounded-full"
-              onClick={handleChat}
-            >
-              <MessageCircle size={18} color="#ffffff" />
-              <Text className="ml-1">聊天</Text>
-            </Button>
-            <Button
-              variant={isLiked ? "default" : "outline"}
-              className={`flex-1 py-3 rounded-full ${isLiked ? 'bg-rose-500 text-white' : ''}`}
-              onClick={handleLike}
-            >
-              <Heart size={18} color={isLiked ? "#ffffff" : "#FF6B8B"} />
-              <Text className="ml-1">{isLiked ? '已喜欢' : '喜欢'}</Text>
-            </Button>
-          </View>
+          {/* 根据是否自己的资料显示不同的操作按钮 */}
+          {isSelf ? (
+            <View className="actions flex gap-3">
+              <Button
+                className="flex-1 bg-[#FF6B8B] text-white py-3 rounded-full"
+                onClick={handleEditProfile}
+              >
+                <Text>编辑资料</Text>
+              </Button>
+            </View>
+          ) : (
+            <View className="actions flex gap-3">
+              <Button
+                className="flex-1 bg-[#FF6B8B] text-white py-3 rounded-full"
+                onClick={handleChat}
+              >
+                <MessageCircle size={18} color="#ffffff" />
+                <Text className="ml-1">聊天</Text>
+              </Button>
+              <Button
+                variant={isLiked ? "default" : "outline"}
+                className={`flex-1 py-3 rounded-full ${isLiked ? 'bg-rose-500 text-white' : ''}`}
+                onClick={handleLike}
+              >
+                <Heart size={18} color={isLiked ? "#ffffff" : "#FF6B8B"} />
+                <Text className="ml-1">{isLiked ? '已喜欢' : '喜欢'}</Text>
+              </Button>
+            </View>
+          )}
         </View>
 
         <Card className="mb-2 mx-4 mt-4">
