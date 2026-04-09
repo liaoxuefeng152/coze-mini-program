@@ -2,8 +2,8 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/circles/index',
-    'pages/messages/index',
-    'pages/profile/index'
+    'pages/posts/index',
+    'pages/me/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -13,15 +13,15 @@ export default defineAppConfig({
   },
   tabBar: {
     color: '#999999',
-    selectedColor: '#f43f5e',
+    selectedColor: '#FF6B8B',
     backgroundColor: '#ffffff',
     borderStyle: 'black',
     list: [
       {
         pagePath: 'pages/index/index',
         text: '首页',
-        iconPath: './assets/tabbar/heart.png',
-        selectedIconPath: './assets/tabbar/heart-active.png',
+        iconPath: './assets/tabbar/home.png',
+        selectedIconPath: './assets/tabbar/home-active.png',
       },
       {
         pagePath: 'pages/circles/index',
@@ -30,13 +30,13 @@ export default defineAppConfig({
         selectedIconPath: './assets/tabbar/users-active.png',
       },
       {
-        pagePath: 'pages/messages/index',
-        text: '消息',
-        iconPath: './assets/tabbar/message-square.png',
-        selectedIconPath: './assets/tabbar/message-square-active.png',
+        pagePath: 'pages/posts/index',
+        text: '动态',
+        iconPath: './assets/tabbar/play.png',
+        selectedIconPath: './assets/tabbar/play-active.png',
       },
       {
-        pagePath: 'pages/profile/index',
+        pagePath: 'pages/me/index',
         text: '我的',
         iconPath: './assets/tabbar/user.png',
         selectedIconPath: './assets/tabbar/user-active.png',

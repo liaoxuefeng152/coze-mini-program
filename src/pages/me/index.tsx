@@ -24,7 +24,11 @@ export default function ProfilePage() {
   }
 
   const handlePageNavigate = (path: string) => {
-    Taro.navigateTo({ url: path })
+    if (path === '/pages/messages/index') {
+      Taro.navigateTo({ url: '/pages/chat/list' })
+    } else {
+      Taro.navigateTo({ url: path })
+    }
   }
 
   const handleSettings = () => {

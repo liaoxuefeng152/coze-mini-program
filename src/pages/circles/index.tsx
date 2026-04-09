@@ -128,7 +128,7 @@ export default function CirclesPage() {
   }
 
   const handleCircleDetail = (circleId: string) => {
-    Taro.navigateTo({ url: `/pages/circles/detail?id=${circleId}` })
+    Taro.navigateTo({ url: `/pages/circles/posts?id=${circleId}` })
   }
 
   return (
