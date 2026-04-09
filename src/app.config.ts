@@ -1,34 +1,65 @@
 export default defineAppConfig({
   pages: [
+    // TabBar页面
     'pages/index/index',
     'pages/circles/index',
-    'pages/likes/index',
     'pages/posts/index',
-    'pages/posts/detail',
-    'pages/posts/publish',
-    'pages/chat/list',
-    'pages/chat/detail',
     'pages/me/index',
-    'pages/profile/detail',
-    'pages/profile/edit',
-    'pages/favorites/index',
-    'pages/blocklist/index',
-    'pages/settings/index',
-    'pages/feedback/index',
+    
+    // 首页相关
+    'pages/login/index',
+    
+    // 认证流程
     'pages/auth/index',
+    'pages/auth/phone',
     'pages/auth/basic',
     'pages/auth/face',
     'pages/auth/manual',
     'pages/auth/marriage',
     'pages/auth/premium',
+    
+    // 资料相关
     'pages/profile/index',
+    'pages/profile/detail',
+    'pages/profile/edit',
     'pages/profile/basic-info',
     'pages/profile/personality-test',
     'pages/profile/preferences',
-    'pages/login/index',
+    
+    // 圈子相关
+    'pages/circles/posts',
+    
+    // 动态相关
+    'pages/posts/detail',
+    'pages/posts/publish',
+    'pages/posts/rejected',
+    'pages/posts/appeal',
+    
+    // 消息相关
     'pages/messages/index',
+    'pages/chat/list',
+    'pages/chat/detail',
+    'pages/matches/success',
+    
+    // 喜欢与匹配
+    'pages/likes/index',
+    
+    // 功能页面
+    'pages/favorites/index',
+    'pages/blocklist/index',
+    'pages/feedback/index',
     'pages/credit/index',
-    'pages/circles/posts'
+    
+    // 设置相关
+    'pages/settings/index',
+    'pages/settings/cancel',
+    'pages/settings/canceling',
+    'pages/settings/canceled',
+    
+    // 通用页面
+    'pages/loading/index',
+    'pages/empty/index',
+    'pages/error/index'
   ],
   window: {
     backgroundTextStyle: 'light',

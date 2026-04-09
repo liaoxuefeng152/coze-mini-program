@@ -1,0 +1,4 @@
+/* 动态驳回页面样式 */
+.post-rejected-page {
+  min-height: 100vh;
+}
