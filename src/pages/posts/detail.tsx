@@ -453,25 +453,7 @@ export default function PostDetailPage() {
       </View>
 
       <View className="footer bg-white px-4 py-3 border-t border-gray-100" style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-        <View className="flex items-center gap-3">
-          <View className="flex-1 flex gap-2">
-            <Button
-              variant="outline"
-              className={`flex-1 flex items-center justify-center gap-1 ${isLiked ? 'border-[#FF6B8B]' : ''}`}
-              onClick={handleLike}
-            >
-              <Heart size={18} color={isLiked ? '#FF6B8B' : '#999999'} filled={isLiked} />
-              <Text className="text-sm">{isLiked ? '已赞' : '点赞'}</Text>
-            </Button>
-            <Button
-              variant="outline"
-              className="flex-1 flex items-center justify-center gap-1"
-              onClick={handleShare}
-            >
-              <Share2 size={18} color="#999999" />
-              <Text className="text-sm">分享</Text>
-            </Button>
-          </View>
+        <View className="flex items-center gap-2">
           <View className="flex-1 flex items-center bg-gray-100 rounded-full px-4 py-2">
             <Textarea
               className="text-sm flex-1"
