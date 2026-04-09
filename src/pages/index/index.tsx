@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import { Heart, X, Info, Crown, Star, Search, MessageCircle, CircleCheck } from 'lucide-react-taro'
 import { Card, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import './index.css'
@@ -299,23 +300,31 @@ export default function IndexPage() {
                 </View>
 
                 <View className="user-info-section p-4">
-                  {/* 用户基本信息 */}
-                  <View className="mb-4">
-                    <Text className="text-2xl font-bold text-gray-900 mb-1">
-                      {currentUser.nickname}, {currentUser.age}
-                    </Text>
-                    <View className="flex items-center gap-3 mb-2">
-                      <Text className="text-sm text-gray-600">{currentUser.height}cm</Text>
-                      <Text className="text-sm text-gray-600">·</Text>
-                      <Text className="text-sm text-gray-600">{currentUser.city}</Text>
-                      <Text className="text-sm text-gray-600">·</Text>
-                      <Text className="text-sm text-gray-600">{currentUser.occupation}</Text>
-                    </View>
-                    <View className="flex items-center gap-2">
-                      <Star size={16} color="#FF6B8B" />
-                      <Text className="text-[#FF6B8B] font-bold text-base">
-                        匹配度 {currentUser.matchScore}分
+                  {/* 圆形头像 + 用户基本信息 */}
+                  <View className="flex items-start gap-3 mb-4">
+                    <Avatar className="w-20 h-20 border-2 border-[#FF6B8B]">
+                      <AvatarImage src={currentUser.avatarUrl} />
+                      <AvatarFallback className="bg-[#FF6B8B] text-white text-xl">
+                        {currentUser.nickname.slice(0, 1)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <View className="flex-1">
+                      <Text className="text-2xl font-bold text-gray-900 mb-1 block">
+                        {currentUser.nickname}, {currentUser.age}
                       </Text>
+                      <View className="flex items-center gap-3 mb-2">
+                        <Text className="text-sm text-gray-600">{currentUser.height}cm</Text>
+                        <Text className="text-sm text-gray-600">·</Text>
+                        <Text className="text-sm text-gray-600">{currentUser.city}</Text>
+                        <Text className="text-sm text-gray-600">·</Text>
+                        <Text className="text-sm text-gray-600">{currentUser.occupation}</Text>
+                      </View>
+                      <View className="flex items-center gap-2">
+                        <Star size={16} color="#FF6B8B" />
+                        <Text className="text-[#FF6B8B] font-bold text-base">
+                          匹配度 {currentUser.matchScore}分
+                        </Text>
+                      </View>
                     </View>
                   </View>
 
